@@ -51,10 +51,13 @@ export const menuPrincipal: ItemMenu[] = [
     rotulo: 'Estoque',
     icone: InboxOutlined,
     filhos: [
-      { chave: 'depositos', rotulo: 'Depósitos', caminho: '/estoque/depositos', permissao: 'Estoque.Consultar', fase: 'Fase 5' },
+      { chave: 'entrada', rotulo: 'Entrada', caminho: '/estoque/entrada', permissao: 'Estoque.MovimentarEntrada', fase: 'Fase 5' },
+      { chave: 'saida', rotulo: 'Saída', caminho: '/estoque/saida', permissao: 'Estoque.MovimentarSaida', fase: 'Fase 5' },
+      { chave: 'ajuste', rotulo: 'Ajuste', caminho: '/estoque/ajuste', permissao: 'Estoque.Ajustar', fase: 'Fase 5' },
       { chave: 'posicao', rotulo: 'Posição', caminho: '/estoque/posicao', permissao: 'Estoque.Consultar', fase: 'Fase 5' },
       { chave: 'kardex', rotulo: 'Kardex', caminho: '/estoque/kardex', permissao: 'Estoque.Consultar', fase: 'Fase 5' },
       { chave: 'lotes-a-vencer', rotulo: 'Lotes a vencer', caminho: '/estoque/lotes-a-vencer', permissao: 'Estoque.Consultar', fase: 'Fase 5' },
+      { chave: 'depositos', rotulo: 'Depósitos', caminho: '/estoque/depositos', permissao: 'Estoque.Consultar', fase: 'Fase 5' },
     ],
   },
   {

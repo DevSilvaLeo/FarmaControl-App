@@ -3,12 +3,13 @@
 Frontend web (SPA) do **FarmaControl**, um ERP de distribuição/atacado
 farmacêutico B2B. Consome a API REST de `api/TheOne.FarmaControl`.
 
-> **Estado:** Etapas 0–5 concluídas — fundação, Design System, blueprints
-> responsivos, **Autenticação & Sistema**, **Cadastros centrais** (Produto,
-> Cliente) e **Parceiros & força de vendas** (Fornecedor/Transportadora/
-> Representante com bloco de identificação compartilhado, Vendedor com editor
-> de metas e débitos). Contratos conferidos contra o Swagger real. Próximo:
-> **Etapa 6 — Estoque** (alvo da homologação). Roadmap em
+> **Estado:** Etapas 0–6 concluídas — **MVP do frontend fechado** (marco M6).
+> Fundação, Design System, blueprints responsivos, Autenticação & Sistema,
+> Cadastros centrais (Produto, Cliente), Parceiros & força de vendas, e
+> **Estoque** (Depósitos, Entrada/Saída/Ajuste com FEFO, Posição, Kardex,
+> Lotes a Vencer). Contratos conferidos contra o Swagger real. Preparo de
+> ambiente para homologação em [`.docs/09-fluxo-estoque.md`](.docs/09-fluxo-estoque.md) §9.8.
+> Pós-MVP: Etapa 7 (Painel), Etapa 8 (a11y/QA). Roadmap em
 > [`.docs/05-etapas-e-roadmap-ux.md`](.docs/05-etapas-e-roadmap-ux.md).
 
 ## Stack

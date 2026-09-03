@@ -27,4 +27,7 @@ export const mapaDePermissoes: Record<string, string | undefined> = {
   '/estoque/posicao': Permissoes.EstoqueConsultar,
   '/estoque/kardex': Permissoes.EstoqueConsultar,
   '/estoque/lotes-a-vencer': Permissoes.EstoqueConsultar,
+  '/estoque/entrada': Permissoes.EstoqueMovimentarEntrada,
+  '/estoque/saida': Permissoes.EstoqueMovimentarSaida,
+  '/estoque/ajuste': Permissoes.EstoqueAjustar,
 };

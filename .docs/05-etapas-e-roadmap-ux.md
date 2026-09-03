@@ -270,6 +270,21 @@ Contra o Swagger real. Detalhe em `08` §8.8.
 
 **Gates:** lint / typecheck / test:unit (80) / build — verdes.
 
+### Notas de implementação (Etapa 6 — Estoque, 2026-09-03) — **fecha o MVP**
+
+`modulos/estoque/`. Detalhe em `09` §9.8.
+
+- Depósitos com `EmptyState` de onboarding; Entrada/Saída/Ajuste num
+  `MovimentacaoPage` parametrizado (FEFO, auto-limpa, link p/ Kardex);
+  Posição com drill-down por lote em drawer; Kardex denso (Saldo após fixo);
+  Lotes a Vencer com `Segmented` 30/60/90/180 + `SemaforoValidade`.
+- Contratos: `POST` de depósito e movimentações são **planos** (sem `{dados}`);
+  movimentações devolvem `number[]`; depósitos e lotes-a-vencer não paginados.
+- Roteiro de preparo de ambiente para homologação em `09` §9.8.
+
+**Gates:** lint / typecheck / test:unit (84) / build — verdes.
+Marco **M6 alcançado** — MVP do frontend fechado (Fases 0–5 do backend).
+
 ---
 
 ## 5.6 Etapa 7 — Painel inicial

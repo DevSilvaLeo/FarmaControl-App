@@ -194,3 +194,41 @@ persona" — é o mesmo painel, com menos cards.
 - [ ] Lotes a Vencer com seletor 30/60/90/180 e semáforo com texto.
 - [ ] Painel: KPIs e ações filtrados por permissão; verificado em
       375 / 768 / 1280.
+
+---
+
+## 9.8 Implementação (Etapa 6 — concluída 2026-09-03)
+
+Módulo `modulos/estoque/`, contra o Swagger real. **Alvo da homologação.**
+
+| Tela | Arquivo | Notas |
+|---|---|---|
+| Depósitos | `paginas/DepositoListaPage.tsx` | lista + modal criar/editar + ações por linha (definir padrão, inativar/reativar); **`EmptyState` de onboarding** ("cadastre o depósito principal") quando a lista está vazia |
+| Entrada / Saída / Ajuste | `paginas/MovimentacaoPage.tsx` (param `tipo`) | formulário curto; `SelectProduto` traz `controlaLote` → Lote/Validade condicionais; **banner FEFO** quando saída/ajuste-saída sem lote; auto-limpa para o próximo lançamento (mantém depósito); link "Ver no Kardex" |
+| Posição | `paginas/PosicaoPage.tsx` | `DataTable` paginado; filtros Depósito + "apenas abaixo do mínimo"; clique na linha → **drawer com saldo por lote** (ordem de validade) |
+| Kardex | `paginas/KardexPage.tsx` | filtros obrigatórios Produto + período (`RangePickerBr`); tabela densa com **"Saldo após" fixo à direita** e Produto fixo à esquerda; `EmptyState` até escolher produto+período |
+| Lotes a Vencer | `paginas/LotesAVencerPage.tsx` | `Segmented` 30/60/90/180 + Depósito; `SemaforoValidade` por linha; cards no mobile |
+| Componentes | `componentes/{SelectProduto,SelectDeposito}.tsx` | `SelectDeposito` pré-seleciona o padrão |
+
+### Contratos confirmados na API real
+
+- **Não aninhados**: `POST /estoque/depositos` (`{nome,codigo,tipo,padrao?}`),
+  `POST /estoque/{entradas,saidas,ajustes}` recebem o command **plano** (sem `{dados}`).
+- Movimentações retornam **`number[]`** (IDs de movimento — pode ser > 1 em FEFO).
+- `GET /estoque/depositos` e `/lotes-a-vencer` **não são paginados** (array).
+- `GET /estoque/kardex` retorna **404** se o `produtoId` não existir.
+- Query params: mistura PascalCase/camelCase — enviamos camelCase (ASP.NET aceita).
+
+### Preparo de ambiente para a homologação
+
+O backend **não semeia** depósito nem cadastros de apoio. Sequência num
+ambiente novo, toda pela UI:
+1. `/produtos/novo` → modais "Gerenciar…" para criar Departamento + Grupo + Unidade → salvar 1 Produto.
+2. `/estoque/depositos` → "Cadastrar depósito" (o principal) → "Definir como padrão".
+3. `/estoque/entrada` → primeira entrada de saldo.
+4. Conferir em `/estoque/posicao` e `/estoque/kardex`.
+
+**Pendências:** E2E de estoque não escritos; `KardexPage` não tem tratamento
+visual dedicado para 404 de produto (mostra tabela vazia).
+
+**Gates locais:** lint / typecheck / test:unit (84) / build — verdes.

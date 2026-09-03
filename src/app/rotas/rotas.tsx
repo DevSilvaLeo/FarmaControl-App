@@ -38,6 +38,11 @@ import { RepresentanteFormPage } from '@/modulos/fornecedores/paginas/Representa
 import { VendedorListaPage } from '@/modulos/vendedores/paginas/VendedorListaPage';
 import { VendedorFormPage } from '@/modulos/vendedores/paginas/VendedorFormPage';
 import { VendedorDetalhePage } from '@/modulos/vendedores/paginas/VendedorDetalhePage';
+import { DepositoListaPage } from '@/modulos/estoque/paginas/DepositoListaPage';
+import { MovimentacaoPage } from '@/modulos/estoque/paginas/MovimentacaoPage';
+import { PosicaoPage } from '@/modulos/estoque/paginas/PosicaoPage';
+import { KardexPage } from '@/modulos/estoque/paginas/KardexPage';
+import { LotesAVencerPage } from '@/modulos/estoque/paginas/LotesAVencerPage';
 
 const com = (chave: string, elemento: ReactNode) => (
   <GuardaPermissao chave={chave}>{elemento}</GuardaPermissao>
@@ -192,6 +197,32 @@ export function Rotas() {
           <Route
             path="vendedores/:id/editar"
             element={com(Permissoes.VendedoresGerenciar, <VendedorFormPage />)}
+          />
+
+          <Route
+            path="estoque/depositos"
+            element={com(Permissoes.EstoqueConsultar, <DepositoListaPage />)}
+          />
+          <Route
+            path="estoque/posicao"
+            element={com(Permissoes.EstoqueConsultar, <PosicaoPage />)}
+          />
+          <Route path="estoque/kardex" element={com(Permissoes.EstoqueConsultar, <KardexPage />)} />
+          <Route
+            path="estoque/lotes-a-vencer"
+            element={com(Permissoes.EstoqueConsultar, <LotesAVencerPage />)}
+          />
+          <Route
+            path="estoque/entrada"
+            element={com(Permissoes.EstoqueMovimentarEntrada, <MovimentacaoPage tipo="entrada" />)}
+          />
+          <Route
+            path="estoque/saida"
+            element={com(Permissoes.EstoqueMovimentarSaida, <MovimentacaoPage tipo="saida" />)}
+          />
+          <Route
+            path="estoque/ajuste"
+            element={com(Permissoes.EstoqueAjustar, <MovimentacaoPage tipo="ajuste" />)}
           />
 
           <Route path="*" element={<NaoEncontradoPage />} />
