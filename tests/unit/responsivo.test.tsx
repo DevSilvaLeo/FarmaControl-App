@@ -29,6 +29,22 @@ describe('AppShell — navegação (agents.md §4.2 linha 1)', () => {
     expect(main?.className).toContain('overflow-x-clip');
     restaurar();
   });
+
+  it('desktop: sidebar recolhida usa 80px (largura do menu inline-collapsed do antd) e é h-screen sticky', async () => {
+    localStorage.removeItem('farmacontrol:sidebar-colapsada');
+    const { container, restaurar } = renderEm(LARGURAS.desktop, <AppShell />);
+    const aside = container.querySelector('aside') as HTMLElement;
+    // expandida por padrão
+    expect(aside.style.width).toBe('240px');
+    expect(aside.className).toContain('sticky');
+    expect(aside.className).toContain('h-screen');
+    // recolher
+    await userEvent.click(screen.getByRole('button', { name: 'Recolher menu' }));
+    expect(aside.style.width).toBe('80px');
+    // o container do menu nunca vaza na horizontal
+    expect(aside.querySelector('.overflow-x-hidden')).not.toBeNull();
+    restaurar();
+  });
 });
 
 // ---------------------------------------------------------------------------

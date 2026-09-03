@@ -34,7 +34,7 @@ export function AppShell() {
   }, [colapsada]);
 
   return (
-    <div className="flex min-h-full">
+    <div className="flex min-h-screen">
       <SidebarNav colapsada={colapsada} aoAlternar={() => setColapsada((v) => !v)} />
 
       <div className="flex min-w-0 flex-1 flex-col">
