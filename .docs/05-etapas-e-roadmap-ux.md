@@ -255,6 +255,21 @@ em `07` §7.8. Pontos principais:
 
 **Gates:** lint / typecheck / test:unit (71) / build — verdes.
 
+### Notas de implementação (Etapa 5 — Parceiros & força de vendas, 2026-09-03)
+
+Contra o Swagger real. Detalhe em `08` §8.8.
+
+- **`CamposDadosParceiro`** compartilhado nos 3 forms de parceiro (identidade +
+  `CampoEndereco` + regulatório); `ParceiroListaPage` genérico config-driven.
+- **Representante**: lista não paginada, sem `reativar` (não inventamos o
+  contrato — `.spec/08` §8.5).
+- **Vendedor**: `EditorMetas` (`GridEmbutido` + `encontrarSobreposicao` no
+  cliente); débitos append-only. `MetaComissaoDto` (leitura) ≠
+  `FaixaMetaEntrada` (escrita) — mapeados.
+- Criação aninhada `{ dados }` em todos; `PUT` plano.
+
+**Gates:** lint / typecheck / test:unit (80) / build — verdes.
+
 ---
 
 ## 5.6 Etapa 7 — Painel inicial

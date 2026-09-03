@@ -27,6 +27,17 @@ import { ProdutoDetalhePage } from '@/modulos/produtos/paginas/ProdutoDetalhePag
 import { ClienteListaPage } from '@/modulos/clientes/paginas/ClienteListaPage';
 import { ClienteFormPage } from '@/modulos/clientes/paginas/ClienteFormPage';
 import { ClienteDetalhePage } from '@/modulos/clientes/paginas/ClienteDetalhePage';
+import { FornecedorListaPage } from '@/modulos/fornecedores/paginas/FornecedorListaPage';
+import { FornecedorFormPage } from '@/modulos/fornecedores/paginas/FornecedorFormPage';
+import { FornecedorDetalhePage } from '@/modulos/fornecedores/paginas/FornecedorDetalhePage';
+import { TransportadoraListaPage } from '@/modulos/fornecedores/paginas/TransportadoraListaPage';
+import { TransportadoraFormPage } from '@/modulos/fornecedores/paginas/TransportadoraFormPage';
+import { TransportadoraDetalhePage } from '@/modulos/fornecedores/paginas/TransportadoraDetalhePage';
+import { RepresentanteListaPage } from '@/modulos/fornecedores/paginas/RepresentanteListaPage';
+import { RepresentanteFormPage } from '@/modulos/fornecedores/paginas/RepresentanteFormPage';
+import { VendedorListaPage } from '@/modulos/vendedores/paginas/VendedorListaPage';
+import { VendedorFormPage } from '@/modulos/vendedores/paginas/VendedorFormPage';
+import { VendedorDetalhePage } from '@/modulos/vendedores/paginas/VendedorDetalhePage';
 
 const com = (chave: string, elemento: ReactNode) => (
   <GuardaPermissao chave={chave}>{elemento}</GuardaPermissao>
@@ -117,6 +128,70 @@ export function Rotas() {
           <Route
             path="clientes/:id/editar"
             element={com(Permissoes.ClientesGerenciar, <ClienteFormPage />)}
+          />
+
+          <Route
+            path="fornecedores"
+            element={com(Permissoes.FornecedoresConsultar, <FornecedorListaPage />)}
+          />
+          <Route
+            path="fornecedores/novo"
+            element={com(Permissoes.FornecedoresGerenciar, <FornecedorFormPage />)}
+          />
+          <Route
+            path="fornecedores/:id"
+            element={com(Permissoes.FornecedoresConsultar, <FornecedorDetalhePage />)}
+          />
+          <Route
+            path="fornecedores/:id/editar"
+            element={com(Permissoes.FornecedoresGerenciar, <FornecedorFormPage />)}
+          />
+
+          <Route
+            path="transportadoras"
+            element={com(Permissoes.FornecedoresConsultar, <TransportadoraListaPage />)}
+          />
+          <Route
+            path="transportadoras/novo"
+            element={com(Permissoes.FornecedoresGerenciar, <TransportadoraFormPage />)}
+          />
+          <Route
+            path="transportadoras/:id"
+            element={com(Permissoes.FornecedoresConsultar, <TransportadoraDetalhePage />)}
+          />
+          <Route
+            path="transportadoras/:id/editar"
+            element={com(Permissoes.FornecedoresGerenciar, <TransportadoraFormPage />)}
+          />
+
+          <Route
+            path="representantes"
+            element={com(Permissoes.FornecedoresConsultar, <RepresentanteListaPage />)}
+          />
+          <Route
+            path="representantes/novo"
+            element={com(Permissoes.FornecedoresGerenciar, <RepresentanteFormPage />)}
+          />
+          <Route
+            path="representantes/:id"
+            element={com(Permissoes.FornecedoresGerenciar, <RepresentanteFormPage />)}
+          />
+
+          <Route
+            path="vendedores"
+            element={com(Permissoes.VendedoresConsultar, <VendedorListaPage />)}
+          />
+          <Route
+            path="vendedores/novo"
+            element={com(Permissoes.VendedoresGerenciar, <VendedorFormPage />)}
+          />
+          <Route
+            path="vendedores/:id"
+            element={com(Permissoes.VendedoresConsultar, <VendedorDetalhePage />)}
+          />
+          <Route
+            path="vendedores/:id/editar"
+            element={com(Permissoes.VendedoresGerenciar, <VendedorFormPage />)}
           />
 
           <Route path="*" element={<NaoEncontradoPage />} />

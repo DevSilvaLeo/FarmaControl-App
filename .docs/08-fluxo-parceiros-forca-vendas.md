@@ -132,3 +132,40 @@ Inativar / Reativar via `ConfirmDialog`.
       mobile).
 - [ ] Representante sem ação "Reativar" (não inventar contrato).
 - [ ] Verificado em 375 / 768 / 1280.
+
+---
+
+## 8.8 Implementação (Etapa 5 — concluída 2026-09-03)
+
+Contra o Swagger real. Módulos `modulos/fornecedores/` (os 3 parceiros, que
+compartilham `DadosParceiro`) e `modulos/vendedores/`.
+
+| Peça | Arquivo |
+|---|---|
+| Bloco de identificação comum | `fornecedores/componentes/CamposDadosParceiro.tsx` (identidade + `CampoEndereco` + regulatório) — reusado nos 3 forms |
+| Lista genérica de parceiro | `fornecedores/componentes/ParceiroListaPage.tsx` (config-driven) |
+| Fornecedor | `paginas/Fornecedor{Lista,Form,Detalhe}Page.tsx` (+ aba Comercial: prazo, tipo de frete, cotação, condição de pgto) |
+| Transportadora | `paginas/Transportadora{Lista,Form,Detalhe}Page.tsx` (+ Registro ANTT, tipo de frete padrão) |
+| Representante | `paginas/Representante{Lista,Form}Page.tsx` — lista simples, sem Detalhe; **só inativar** (sem reativar na API); switch "assina licitação" |
+| Vendedor | `vendedores/paginas/Vendedor{Lista,Form,Detalhe}Page.tsx` |
+| Editor de metas | `vendedores/componentes/{EditorMetas.tsx,metasUtil.ts}` — `GridEmbutido` + **validação de sobreposição no cliente** (`encontrarSobreposicao`); `PUT /vendedores/{id}/metas` (substituição total) |
+| Débitos | tabela append-only no Detalhe + modal "Registrar débito" (`POST /vendedores/{id}/debitos`) |
+| Mapeadores | `fornecedores/mapeadores.ts` (form ↔ `DadosParceiro`) |
+
+### Contratos confirmados na API real
+
+- **Criação aninhada**: `POST /fornecedores|transportadoras|representantes` recebe
+  `{ dados: DadosParceiro, …extras }`; `POST /vendedores` recebe `{ dados: DadosVendedor }`.
+  Os `PUT` recebem o objeto plano (com os extras no nível raiz, para parceiros).
+- **Representante**: `GET /representantes` **não é paginado** (array) → `semPaginacao`
+  + `usarListaComoPaged`. Sem `reativar`.
+- **Vendedor metas**: `MetaComissaoDto` (leitura: `metaInicioUtc/metaFimUtc`) ≠
+  `FaixaMetaEntrada` (escrita: `inicioUtc/fimUtc`) — mapeado no `EditorMetas`.
+- Regra "vendedor deve ser interno e/ou externo" no Zod (o backend também tem,
+  mas não bloqueou a criação num teste — a UI é a barreira imediata).
+
+**Pendências:** E2E não escritos; ao verificar o contrato de `POST /vendedores`
+foi criado 1 vendedor de teste (`Teste V`) no banco de desenvolvimento — pode
+ser apagado.
+
+**Gates locais:** lint / typecheck / test:unit (80) / build — verdes.

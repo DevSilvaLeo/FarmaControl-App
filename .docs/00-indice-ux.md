@@ -71,5 +71,6 @@ auditoria formal de contraste na Etapa 8.
 - **Etapa 3** (Autenticação & Sistema: login + 2FA, Minha Conta, Usuários/Perfis/Empresas, guardas de rota, menu por permissão) — concluída (2026-09-03). Notas em `05` §5.5.
 - **Reconciliação com backend real + Docker** (2026-09-03): backend levantado e testado; `npm run gerar-tipos` contra o Swagger real; DTOs de auth/sistema ajustados (ver `06` §6.10). CORS resolvido por proxy (`/api` mesma origem — Vite em dev, Nginx no container). Frontend containerizado (`Dockerfile` + `docker-compose.yml`, imagem ~50 MB).
 - **Etapa 4** (Cadastros centrais: Geografia/`CampoEndereco`, Produto 6 abas + apoio, Cliente 5 abas + endereços/contatos/bloqueio/limite) — concluída (2026-09-03), contra o Swagger real. Notas em `07` §7.8. Campos de form reutilizáveis em `compartilhado/ui/campos.tsx`.
+- **Etapa 5** (Parceiros & força de vendas: Fornecedor/Transportadora/Representante com `CamposDadosParceiro` compartilhado + Vendedor com editor de metas e débitos) — concluída (2026-09-03). Notas em `08` §8.8.
 
-Próximo passo: Etapa 5 — Fornecedores e força de vendas (ver `05-etapas-e-roadmap-ux.md` e `08-fluxo-parceiros-forca-vendas.md`).
+Próximo passo: **Etapa 6 — Estoque operacional** (alvo da homologação; ver `05-etapas-e-roadmap-ux.md` e `09-fluxo-estoque.md`).
