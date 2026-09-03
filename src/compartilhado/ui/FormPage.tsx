@@ -1,7 +1,8 @@
 import { useMemo, useState, type ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Affix, Button, Grid, Select, Tabs } from 'antd';
+import { Affix, Button, Select, Tabs } from 'antd';
 import { CheckCircleFilled, ExclamationCircleFilled } from '@ant-design/icons';
+import { useBreakpoint } from '@/compartilhado/hooks/useBreakpoint';
 import { PageHeader } from './PageHeader';
 import { BottomActionBar } from './BottomActionBar';
 
@@ -46,9 +47,8 @@ export function FormPage({
   voltarPara?: string;
 }) {
   const navigate = useNavigate();
-  const screens = Grid.useBreakpoint();
-  const ehMobile = !screens.md;
-  const usarAffix = !!screens.lg;
+  const { ehMobile, ehDesktop } = useBreakpoint();
+  const usarAffix = ehDesktop;
 
   const [abaAtual, setAbaAtual] = useState(abas?.[0]?.chave ?? '');
   const indice = useMemo(
@@ -130,7 +130,8 @@ export function FormPage({
       <Tabs
         activeKey={abaAtual}
         onChange={setAbaAtual}
-        tabPosition="top"
+        // `md:` abas roláveis quando estouram a largura; `lg:` cabem inteiras.
+        more={{ trigger: 'hover' }}
         items={abas.map((a) => ({
           key: a.chave,
           label: (

@@ -66,6 +66,7 @@ auditoria formal de contraste na Etapa 8.
 
 **Progresso de implementação:**
 - **Etapa 0** (fundação: CRA→Vite, tokens, AppShell mobile-first, `/diagnostico`) — concluída (2026-09-02).
-- **Etapa 1** (Design System: tokens, UI Kit, hooks cross-cutting, `/estilo`) — concluída (2026-09-03). Ver "Notas de implementação" em `05-etapas-e-roadmap-ux.md` §5.3.
+- **Etapa 1** (Design System: tokens, UI Kit, hooks cross-cutting, `/estilo`) — concluída (2026-09-03). Notas em `05` §5.3.
+- **Etapa 2** (blueprints responsivos: `useBreakpoint`, `FiltrosResponsivos`, `DetailPage`, `GridEmbutido`, protótipos `/estilo/lista` e `/estilo/formulario`) — concluída (2026-09-03). Notas em `05` §5.4 e `03` §3.9.
 
-Próximo passo: Etapa 2 — Blueprints responsivos (ver `05-etapas-e-roadmap-ux.md`).
+Próximo passo: Etapa 3 — Autenticação & Sistema (ver `05-etapas-e-roadmap-ux.md` e `06-fluxo-autenticacao-sistema.md`).

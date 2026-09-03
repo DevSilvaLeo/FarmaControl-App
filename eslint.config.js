@@ -39,5 +39,9 @@ export default tseslint.config(
         afterAll: 'readonly',
       },
     },
+    rules: {
+      // helpers de teste exportam utilitários + componentes juntos — sem HMR aqui
+      'react-refresh/only-export-components': 'off',
+    },
   },
 );

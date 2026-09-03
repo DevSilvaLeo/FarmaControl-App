@@ -5,6 +5,8 @@ import { PainelPage } from '@/app/paginas/PainelPage';
 import { NaoEncontradoPage } from '@/app/paginas/NaoEncontradoPage';
 import { DiagnosticoPage } from '@/modulos/diagnostico/paginas/DiagnosticoPage';
 import { EstiloShowcasePage } from '@/modulos/estilo/EstiloShowcasePage';
+import { ListaProtatipoPage } from '@/modulos/estilo/ListaProtatipoPage';
+import { FormProtatipoPage } from '@/modulos/estilo/FormProtatipoPage';
 
 /**
  * Roteamento esqueleto (`.spec/04` §4.3 item 6). Guarda de autenticação/
@@ -22,6 +24,8 @@ export function Rotas() {
         <Route index element={<PainelPage />} />
         <Route path="diagnostico" element={<DiagnosticoPage />} />
         <Route path="estilo" element={<EstiloShowcasePage />} />
+        <Route path="estilo/lista" element={<ListaProtatipoPage />} />
+        <Route path="estilo/formulario" element={<FormProtatipoPage />} />
         <Route path="*" element={<NaoEncontradoPage />} />
       </Route>
     </Routes>

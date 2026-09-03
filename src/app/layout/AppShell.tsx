@@ -40,7 +40,10 @@ export function AppShell() {
       <div className="flex min-w-0 flex-1 flex-col">
         <Topbar aoAbrirMenu={() => setDrawerAberto(true)} />
 
-        <main className="flex-1 px-4 py-4 pb-24 lg:px-6 lg:py-6 lg:pb-6">
+        {/* `overflow-x-clip` + `min-w-0` no pai: conteúdo largo (Kardex/Posição)
+            rola dentro do seu próprio container, o body nunca na horizontal
+            (`agents.md` "Responsive"). */}
+        <main className="min-w-0 flex-1 overflow-x-clip px-4 py-4 pb-24 lg:px-6 lg:py-6 lg:pb-6">
           <div className="mx-auto w-full max-w-[1440px]">
             <Outlet />
           </div>

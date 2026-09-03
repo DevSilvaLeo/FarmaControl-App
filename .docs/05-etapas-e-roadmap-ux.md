@@ -160,6 +160,27 @@ padrão nas 3 larguras + regras drawer×modal + tratamento de Kardex/Posição.
 - Teste de componente com viewport mockado para cada padrão.
 - `body` nunca rola na horizontal em nenhuma largura (Kardex incluso).
 
+### Notas de implementação (Etapa 2 — concluída 2026-09-03)
+
+- **`useBreakpoint`** (`compartilhado/hooks/`) passa a ser a fonte única da
+  decisão responsiva em JS, com os breakpoints **do Tailwind** (lg = 1024).
+  `DataTable` e `FormPage` migraram de `Grid.useBreakpoint` do antd (lg = 992)
+  para ele — remove o descompasso CSS↔JS.
+- **Componentes novos:** `FiltrosResponsivos` (bottom sheet no mobile),
+  `DetailPage` (action sheet `⋯` no mobile, barra visível no desktop),
+  `GridEmbutido` (cards ↔ tabela editável). `DataTable` ganhou o tier
+  intermediário via `apenasDesktop` por coluna (oculta na faixa `md`).
+- **Contenção de scroll horizontal:** `<main>` do `AppShell` com
+  `min-w-0 overflow-x-clip`; tabelas largas rolam no próprio container.
+- **Protótipos:** rotas `/estilo/lista` e `/estilo/formulario` (sem código de
+  negócio) — link no showcase `/estilo`. Detalhamento em `.docs/03` §3.9.
+- **Testes:** `tests/unit/_viewport.tsx` (`mockViewport`/`renderEm`) +
+  `tests/unit/responsivo.test.tsx` (13 casos, um par por padrão).
+- Deprecações do antd v6 corrigidas de passagem: `Tabs.tabPosition` →
+  padrão, `Drawer.height` → `styles.wrapper`.
+
+**Gates locais:** lint / typecheck / test:unit (50) / build — verdes.
+
 ---
 
 ## 5.5 Etapas 3–6 — Telas de negócio

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Button, Divider } from 'antd';
 import { PageHeader } from '@/compartilhado/ui/PageHeader';
 import { SectionCard } from '@/compartilhado/ui/SectionCard';
@@ -55,6 +56,21 @@ export function EstiloShowcasePage() {
         titulo="UI Kit — Showcase"
         descricao="Tokens e componentes de compartilhado/ui. Verifique em 375 / 768 / 1280 px."
       />
+
+      <SectionCard titulo="Protótipos responsivos (Etapa 2)">
+        <p className="m-0 mb-2 text-sm text-neutral-600">
+          Demonstram os 6 padrões de adaptação da <span className="mono">agents.md §4.2</span> sem
+          código específico de tela de negócio.
+        </p>
+        <div className="flex flex-wrap gap-2">
+          <Link to="/estilo/lista">
+            <Button>Protótipo — Lista</Button>
+          </Link>
+          <Link to="/estilo/formulario">
+            <Button>Protótipo — Formulário e Detalhe</Button>
+          </Link>
+        </div>
+      </SectionCard>
 
       <SectionCard titulo="Paleta — Azul Clínico">
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">

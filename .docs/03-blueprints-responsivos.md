@@ -295,3 +295,33 @@ drawer de detalhamento por lote (ordem FEFO — `.spec/09` §9.4).
 | Sucesso de mutação | toast curto topo-direito + invalidação de cache (TanStack Query) |
 | 403 em rota | página "Acesso negado" (`.spec/05` §5.5) — não redireciona em silêncio |
 | 404 em detalhe | página "Não encontrado" com link de volta à lista |
+
+---
+
+## 3.9 Implementação (Etapa 2 — concluída 2026-09-03)
+
+Cada padrão de `agents.md` §4.2 está implementado num componente genérico e
+coberto por teste com viewport mockado (`tests/unit/responsivo.test.tsx` +
+`tests/unit/_viewport.tsx`). Régua de breakpoints via
+`compartilhado/hooks/useBreakpoint.ts` (valores **do Tailwind**: sm 640 / md
+768 / lg 1024 / xl 1280) — não o `Grid.useBreakpoint` do antd (cujo `lg` é
+992px).
+
+| Padrão (§4.2) | Componente | `< md` | `md` | `lg+` |
+|---|---|---|---|---|
+| 1. Navegação | `AppShell` + `BottomNav`/`NavDrawer`/`SidebarNav` | bottom nav + drawer | drawer | sidebar fixa colapsável |
+| 2. `DataTable` | `DataTable` | lista de cards | tabela sem colunas `apenasDesktop` | tabela completa |
+| 3. Formulário | `FormPage` | fluxo em etapas (`Passo X de N`) + `BottomActionBar` | `<Tabs>` roláveis | `<Tabs>` + `Affix` no rodapé |
+| 4. Detalhe | `DetailPage` | ações em `⋯` (action sheet) + chips de seção roláveis | idem | barra de ações visível + `<Tabs>` |
+| 5. Grid embutido | `GridEmbutido` | cards editáveis + `[+ Adicionar]` largura total | tabela editável | tabela editável |
+| 6. Filtros | `FiltrosResponsivos` | botão "Filtros" + bottom sheet (badge de contagem, `[Limpar]`/`[Aplicar]`) | barra inline | barra inline completa |
+
+**Contenção de scroll horizontal:** `<main>` do `AppShell` tem
+`min-w-0 overflow-x-clip`; conteúdo largo (Kardex/Posição) rola dentro do
+próprio container do `DataTable` (`<Table scroll={{ x: 'max-content' }}>`).
+O `body` nunca rola na horizontal.
+
+**Protótipos** (sem código de tela de negócio) — `.spec/05` §5.4 critério de
+pronto: `/estilo/lista` (`DataTable` + `FiltrosResponsivos` + tiers de coluna)
+e `/estilo/formulario` (`FormPage` + `GridEmbutido` + `DetailPage`). Link no
+showcase `/estilo`.

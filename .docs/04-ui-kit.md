@@ -68,6 +68,18 @@ com `<Steps>`/timeline do antd. Construído já na Etapa 1 porque Pedido (Fase
 Wordmark + símbolo provisórios (`01` §1.8). Ponto único de troca quando o
 logo oficial chegar.
 
+### `DetailPage` — `.docs/03` §3.4 *(Etapa 2)*
+Casca de página de Detalhe. `< lg`: cabeçalho + ações em `⋯` (action sheet) +
+chips de seção roláveis. `lg:`: barra de ações visível + `<Tabs>`. Cada ação
+respeita sua `permissao` (`usePermissao`); painel "Detalhes de auditoria"
+colapsado ao pé.
+
+### `GridEmbutido<T>` — `.docs/03` §3.5 *(Etapa 2)*
+Grid embutido editável. `< lg`: cards editáveis (um card = uma linha) +
+`[+ Adicionar]` largura total. `lg:`: tabela editável. `aoMudar` recebe a
+lista inteira (a tela salva via `PUT` de substituição total). `confirmarAoRemover`
+liga um `ConfirmDialog` antes de excluir linha persistida.
+
 ## 4.3 Wrappers sobre Ant Design
 
 ### `DataTable<T>` — `.spec/05` §5.3
@@ -135,6 +147,18 @@ e preenche logradouro/bairro/cidade/UF; usuário confirma número/complemento.
 Estados: ocioso, consultando (spinner no sufixo), preenchido, "CEP não
 encontrado" (permite preencher à mão + link "cadastrar CEP" para quem tem
 `CadastrosApoio.Gerenciar`).
+
+### `FiltrosResponsivos` — `.docs/03` §3.2 *(Etapa 2)*
+Adapta a barra de filtros: `< md` esconde os controles atrás de um botão
+"Filtros" (badge de contagem) que abre um bottom sheet com `[Limpar]`/
+`[Aplicar]`; `md:+` renderiza os controles inline. Usado internamente pelo
+`DataTable` (quando recebe `filtros`) e disponível avulso.
+
+### `useBreakpoint` (hook) — `agents.md` §4.1 *(Etapa 2)*
+`compartilhado/hooks/useBreakpoint.ts`: `{ sm, md, lg, xl, ehMobile, ehTablet,
+ehDesktop }` a partir de `matchMedia`, com os **valores do Tailwind**
+(sm 640 / md 768 / lg 1024 / xl 1280). Fonte única da decisão responsiva em
+JS — os componentes do kit não usam mais `Grid.useBreakpoint` do antd.
 
 ## 4.4 Formulário — campos e comportamento
 

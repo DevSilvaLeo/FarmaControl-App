@@ -1,20 +1,29 @@
 import { type Key, type ReactNode } from 'react';
-import { Button, Grid, Input, Pagination, Table } from 'antd';
-import type { ColumnsType } from 'antd/es/table';
+import { Button, Input, Pagination, Table } from 'antd';
+import type { ColumnType } from 'antd/es/table';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { PlusOutlined } from '@ant-design/icons';
 import { usePaginacao } from '@/compartilhado/hooks/usePaginacao';
+import { useBreakpoint } from '@/compartilhado/hooks/useBreakpoint';
 import { RequerPermissao } from '@/compartilhado/auth/RequerPermissao';
 import { EmptyState } from './EmptyState';
+import { FiltrosResponsivos } from './FiltrosResponsivos';
 import type { PagedResult } from '@/compartilhado/api/tipos';
 
+/** Coluna de tabela + marcação de tier responsivo (`agents.md` §4.2). */
+export type ColunaResponsiva<T> = ColumnType<T> & {
+  /** Só aparece a partir de `lg:` (na faixa tablet/`md` fica oculta). */
+  apenasDesktop?: boolean;
+};
+
 export interface DataTableProps<T> {
-  colunas: ColumnsType<T>;
+  colunas: ColunaResponsiva<T>[];
   /** Hook de consulta do módulo — deve ler a paginação/filtros da URL. */
   usarConsulta: () => UseQueryResult<PagedResult<T>>;
   rowKey: keyof T | ((registro: T) => Key);
-  /** Barra de filtros específica da tela (renderizada acima). */
+  /** Barra de filtros específica da tela (adaptada por `FiltrosResponsivos`). */
   filtros?: ReactNode;
+  qtdFiltrosAtivos?: number;
   /** Busca textual sempre visível (`.spec/03` §3.9). */
   buscaTextual?: { valor: string; aoMudar: (v: string) => void; placeholder?: string };
   aoClicarLinha?: (registro: T) => void;
@@ -31,6 +40,7 @@ export function DataTable<T extends object>({
   usarConsulta,
   rowKey,
   filtros,
+  qtdFiltrosAtivos = 0,
   buscaTextual,
   aoClicarLinha,
   acaoPrincipal,
@@ -38,15 +48,16 @@ export function DataTable<T extends object>({
   temFiltroAtivo = false,
   aoLimparFiltros,
 }: DataTableProps<T>) {
-  const screens = Grid.useBreakpoint();
-  const ehMobile = !screens.md;
+  const { ehMobile, ehTablet } = useBreakpoint();
   const { pagina, tamanhoPagina, irParaPagina, definirTamanhoPagina } = usePaginacao();
   const consulta = usarConsulta();
 
   const dados = consulta.data;
   const itens = dados?.itens ?? [];
-  const chaveDe = (r: T): Key =>
-    typeof rowKey === 'function' ? rowKey(r) : (r[rowKey] as Key);
+  const chaveDe = (r: T): Key => (typeof rowKey === 'function' ? rowKey(r) : (r[rowKey] as Key));
+
+  // Tier de colunas: na faixa tablet (md..lg) oculta as `apenasDesktop`.
+  const colunasVisiveis = ehTablet ? colunas.filter((c) => !c.apenasDesktop) : colunas;
 
   const botaoNovo = acaoPrincipal ? (
     <RequerPermissao chave={acaoPrincipal.permissao}>
@@ -77,7 +88,7 @@ export function DataTable<T extends object>({
   return (
     <div className="flex flex-col gap-3">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex flex-1 flex-col gap-2 sm:flex-row sm:items-center">
+        <div className="flex flex-1 flex-wrap items-center gap-2">
           {buscaTextual && (
             <Input.Search
               allowClear
@@ -87,12 +98,14 @@ export function DataTable<T extends object>({
               onChange={(e) => buscaTextual.aoMudar(e.target.value)}
             />
           )}
-          {!ehMobile && filtros}
+          {filtros && (
+            <FiltrosResponsivos qtdAtivos={qtdFiltrosAtivos} aoLimpar={aoLimparFiltros}>
+              {filtros}
+            </FiltrosResponsivos>
+          )}
         </div>
         {botaoNovo}
       </div>
-
-      {ehMobile && filtros && <div>{filtros}</div>}
 
       {vazio}
 
@@ -112,9 +125,16 @@ export function DataTable<T extends object>({
                   {renderCardMobile
                     ? renderCardMobile(registro)
                     : colunas.slice(0, 3).map((c, i) => (
-                        <div key={i} className={i === 0 ? 'font-medium text-neutral-800' : 'text-sm text-neutral-500'}>
+                        <div
+                          key={i}
+                          className={
+                            i === 0 ? 'font-medium text-neutral-800' : 'text-sm text-neutral-500'
+                          }
+                        >
                           {'dataIndex' in c && c.dataIndex != null
-                            ? String((registro as Record<string, unknown>)[String(c.dataIndex)] ?? '')
+                            ? String(
+                                (registro as Record<string, unknown>)[String(c.dataIndex)] ?? '',
+                              )
                             : null}
                         </div>
                       ))}
@@ -125,7 +145,7 @@ export function DataTable<T extends object>({
 
       {!vazio && !ehMobile && (
         <Table<T>
-          columns={colunas}
+          columns={colunasVisiveis}
           dataSource={itens}
           rowKey={(r) => chaveDe(r)}
           loading={consulta.isLoading}
