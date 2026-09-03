@@ -24,6 +24,7 @@ import { EmpresaDetalhePage } from '@/modulos/sistema/paginas/EmpresaDetalhePage
 import { ProdutoListaPage } from '@/modulos/produtos/paginas/ProdutoListaPage';
 import { ProdutoFormPage } from '@/modulos/produtos/paginas/ProdutoFormPage';
 import { ProdutoDetalhePage } from '@/modulos/produtos/paginas/ProdutoDetalhePage';
+import { CadastrosApoioPage } from '@/modulos/produtos/paginas/CadastrosApoioPage';
 import { ClienteListaPage } from '@/modulos/clientes/paginas/ClienteListaPage';
 import { ClienteFormPage } from '@/modulos/clientes/paginas/ClienteFormPage';
 import { ClienteDetalhePage } from '@/modulos/clientes/paginas/ClienteDetalhePage';
@@ -41,6 +42,7 @@ import { VendedorDetalhePage } from '@/modulos/vendedores/paginas/VendedorDetalh
 import { DepositoListaPage } from '@/modulos/estoque/paginas/DepositoListaPage';
 import { CentroCustoListaPage } from '@/modulos/centrosCusto/paginas/CentroCustoListaPage';
 import { MovimentacaoPage } from '@/modulos/estoque/paginas/MovimentacaoPage';
+import { ParametrosEstoquePage } from '@/modulos/estoque/paginas/ParametrosEstoquePage';
 import { PosicaoPage } from '@/modulos/estoque/paginas/PosicaoPage';
 import { KardexPage } from '@/modulos/estoque/paginas/KardexPage';
 import { LotesAVencerPage } from '@/modulos/estoque/paginas/LotesAVencerPage';
@@ -109,6 +111,10 @@ export function Rotas() {
           />
 
           <Route path="produtos" element={com(Permissoes.ProdutosConsultar, <ProdutoListaPage />)} />
+          <Route
+            path="cadastros/apoio"
+            element={com(Permissoes.ProdutosConsultar, <CadastrosApoioPage />)}
+          />
           <Route
             path="produtos/novo"
             element={com(Permissoes.ProdutosGerenciar, <ProdutoFormPage />)}
@@ -207,6 +213,10 @@ export function Rotas() {
           <Route
             path="estoque/centros-custo"
             element={com(Permissoes.CentrosCustoConsultar, <CentroCustoListaPage />)}
+          />
+          <Route
+            path="estoque/parametros"
+            element={com(Permissoes.EstoqueConsultar, <ParametrosEstoquePage />)}
           />
           <Route
             path="estoque/posicao"

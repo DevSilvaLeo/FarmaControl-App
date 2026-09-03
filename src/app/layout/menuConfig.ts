@@ -39,6 +39,7 @@ export const menuPrincipal: ItemMenu[] = [
     icone: DatabaseOutlined,
     filhos: [
       { chave: 'produtos', rotulo: 'Produtos', caminho: '/produtos', permissao: 'Produtos.Consultar', fase: 'Fase 3' },
+      { chave: 'cadastros-apoio', rotulo: 'Cadastros de apoio', caminho: '/cadastros/apoio', permissao: 'Produtos.Consultar', fase: 'Fase 6' },
       { chave: 'clientes', rotulo: 'Clientes', caminho: '/clientes', permissao: 'Clientes.Consultar', fase: 'Fase 3' },
       { chave: 'fornecedores', rotulo: 'Fornecedores', caminho: '/fornecedores', permissao: 'Fornecedores.Consultar', fase: 'Fase 4' },
       { chave: 'transportadoras', rotulo: 'Transportadoras', caminho: '/transportadoras', permissao: 'Fornecedores.Consultar', fase: 'Fase 4' },
@@ -58,6 +59,7 @@ export const menuPrincipal: ItemMenu[] = [
       { chave: 'kardex', rotulo: 'Kardex', caminho: '/estoque/kardex', permissao: 'Estoque.Consultar', fase: 'Fase 5' },
       { chave: 'lotes-a-vencer', rotulo: 'Lotes a vencer', caminho: '/estoque/lotes-a-vencer', permissao: 'Estoque.Consultar', fase: 'Fase 5' },
       { chave: 'depositos', rotulo: 'Depósitos', caminho: '/estoque/depositos', permissao: 'Estoque.Consultar', fase: 'Fase 5' },
+      { chave: 'parametros', rotulo: 'Mín/máx por depósito', caminho: '/estoque/parametros', permissao: 'Estoque.Consultar', fase: 'Fase 6' },
       { chave: 'centros-custo', rotulo: 'Centros de custo', caminho: '/estoque/centros-custo', permissao: 'CentrosCusto.Consultar', fase: 'Fase 6' },
     ],
   },

@@ -73,6 +73,25 @@ export interface LoteAVencerDto {
   diasParaVencer: number;
 }
 
+/**
+ * Estoque mínimo/máximo efetivo de um produto num depósito. `personalizado=true`
+ * quando existe uma linha própria (senão os valores vêm do cadastro do produto).
+ */
+export interface ParametroEstoqueDepositoDto {
+  depositoId: number;
+  depositoNome: string;
+  estoqueMinimo: number;
+  estoqueMaximo: number;
+  personalizado: boolean;
+}
+
+export interface DefinirParametroEstoqueBody {
+  produtoId: number;
+  depositoId: number;
+  estoqueMinimo: number;
+  estoqueMaximo: number;
+}
+
 export interface RegistrarEntradaBody {
   depositoId?: number | null;
   produtoId: number;
