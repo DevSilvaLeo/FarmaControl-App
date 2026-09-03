@@ -26,6 +26,24 @@ export const rotulosTipoMedicamento: Record<string, string> = {
   Otc: 'OTC (venda livre)',
 };
 
+export const rotulosTipoPessoa: Record<string, string> = {
+  Fisica: 'Pessoa física',
+  Juridica: 'Pessoa jurídica',
+};
+
+/** Tabela de origem da mercadoria (ICMS/NF-e) — 0 a 8. */
+export const rotulosOrigemMercadoria: Record<string, string> = {
+  Nacional: '0 — Nacional',
+  EstrangeiraImportacaoDireta: '1 — Estrangeira, importação direta',
+  EstrangeiraAdquiridaNoMercadoInterno: '2 — Estrangeira, adquirida no mercado interno',
+  NacionalConteudoImportacaoSuperior40: '3 — Nacional, conteúdo de importação > 40% e ≤ 70%',
+  NacionalProcessosProdutivosBasicos: '4 — Nacional, produção conforme processos produtivos básicos',
+  NacionalConteudoImportacaoInferiorOuIgual40: '5 — Nacional, conteúdo de importação ≤ 40%',
+  EstrangeiraImportacaoDiretaSemSimilar: '6 — Estrangeira, importação direta, sem similar nacional',
+  EstrangeiraMercadoInternoSemSimilar: '7 — Estrangeira, mercado interno, sem similar nacional',
+  NacionalConteudoImportacaoSuperior70: '8 — Nacional, conteúdo de importação > 70%',
+};
+
 export const rotulosMotivoAjuste: Record<string, string> = {
   Perda: 'Perda',
   Quebra: 'Quebra',

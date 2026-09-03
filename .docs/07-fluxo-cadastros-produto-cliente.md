@@ -203,3 +203,49 @@ Produto: Nome, Órgão público (switch). Acessível como modal a partir do
       de origem.
 - [ ] Bloqueio de cliente exige motivo; limite de crédito é ação isolada.
 - [ ] Verificado em 375 / 768 / 1280.
+
+---
+
+## 7.8 Implementação (Etapa 4 — concluída 2026-09-03)
+
+Construída contra o **Swagger real** (backend no ar) — `src/tipos/api.gerado.ts`.
+
+| Tela / peça | Arquivo |
+|---|---|
+| Geografia (transversal) | `modulos/geografia/{api.ts,hooks/useGeografia.ts}` + **`componentes/CampoEndereco.tsx`** (CEP autopreenche + Estado→Cidade autocomplete) |
+| Produto — lista / form (6 abas) / detalhe | `modulos/produtos/paginas/Produto{Lista,Form,Detalhe}Page.tsx` |
+| Produto — apoio | `componentes/{CamposApoioProduto,GerenciarApoioModal}.tsx` (Marca/Departamento/Grupo/Subgrupo/Laboratório/Unidade) |
+| Cliente — lista / form (5 abas) / detalhe | `modulos/clientes/paginas/Cliente{Lista,Form,Detalhe}Page.tsx` |
+| Cliente — sub-recursos | `componentes/{GerenciarSegmentosModal,AdicionarEnderecoDrawer}.tsx` + modal de contato inline |
+| Campos de formulário reutilizáveis | `compartilhado/ui/campos.tsx` (`CampoSelect`, `CampoSwitch`, `CampoNumero`, `CampoMoeda`, `CampoData`) |
+| Erros 400 → campos RHF | `compartilhado/api/errosDeFormulario.ts` (`aplicarErrosDeCampo`) |
+
+### Reconciliação de contratos
+
+- **Criação aninhada**: `POST /produtos` e `POST /clientes` recebem `{ dados: … }`
+  (o `PUT` recebe o objeto plano). Confirmado por 400 do backend.
+- **Erros de campo do backend** vêm com prefixo `Dados.` e segmentos em
+  PascalCase (`Dados.DepartamentoId`) — `aplicarErrosDeCampo` normaliza para
+  `departamentoId`.
+- **Ações separadas**: `PUT /produtos/{id}/precos`, `PUT /produtos/{id}/unidades`
+  (array direto), `PUT /clientes/{id}/limite-credito` (`{limite}`),
+  `POST /clientes/{id}/bloquear` (`{motivo}`).
+- **Sub-recursos do Cliente são append-only** (só `POST`): endereços e contatos
+  aparecem como cards + "Adicionar", sem editar/remover.
+- Query de lista: `Pagina/TamanhoPagina/TermoBusca/GrupoId|SegmentoId/IncluirInativos`
+  (PascalCase; ASP.NET aceita case-insensitive — enviamos camelCase).
+- `custoMedio` só leitura; `vendedorId`/`transportadoraId` do Cliente **ocultos**
+  até a Etapa 5.
+- Fix de passagem: `CampoCep` com sufixo de largura fixa (evita perder foco no antd).
+
+### Estado do backend
+
+Os cadastros de apoio (marcas, grupos, departamentos, segmentos) e Produto/Cliente
+**não têm seed** — a primeira ação num ambiente novo é criar Departamento + Grupo
++ Unidade pelos modais de "Gerenciar…" dentro do formulário de Produto.
+
+**Pendências:** E2E (`produto.spec.ts`/`cliente.spec.ts`) não criados — os
+fluxos foram validados via contrato (400/GET) contra a API real, sem gerar
+dados persistentes no banco de desenvolvimento do usuário.
+
+**Gates locais:** lint / typecheck / test:unit (71) / build — verdes.

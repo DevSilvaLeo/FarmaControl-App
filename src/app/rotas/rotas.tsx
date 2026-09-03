@@ -21,6 +21,12 @@ import { PerfilFormPage } from '@/modulos/sistema/paginas/PerfilFormPage';
 import { PerfilDetalhePage } from '@/modulos/sistema/paginas/PerfilDetalhePage';
 import { EmpresaListaPage } from '@/modulos/sistema/paginas/EmpresaListaPage';
 import { EmpresaDetalhePage } from '@/modulos/sistema/paginas/EmpresaDetalhePage';
+import { ProdutoListaPage } from '@/modulos/produtos/paginas/ProdutoListaPage';
+import { ProdutoFormPage } from '@/modulos/produtos/paginas/ProdutoFormPage';
+import { ProdutoDetalhePage } from '@/modulos/produtos/paginas/ProdutoDetalhePage';
+import { ClienteListaPage } from '@/modulos/clientes/paginas/ClienteListaPage';
+import { ClienteFormPage } from '@/modulos/clientes/paginas/ClienteFormPage';
+import { ClienteDetalhePage } from '@/modulos/clientes/paginas/ClienteDetalhePage';
 
 const com = (chave: string, elemento: ReactNode) => (
   <GuardaPermissao chave={chave}>{elemento}</GuardaPermissao>
@@ -83,6 +89,34 @@ export function Rotas() {
           <Route
             path="sistema/empresas/:id"
             element={com(Permissoes.EmpresasConsultar, <EmpresaDetalhePage />)}
+          />
+
+          <Route path="produtos" element={com(Permissoes.ProdutosConsultar, <ProdutoListaPage />)} />
+          <Route
+            path="produtos/novo"
+            element={com(Permissoes.ProdutosGerenciar, <ProdutoFormPage />)}
+          />
+          <Route
+            path="produtos/:id"
+            element={com(Permissoes.ProdutosConsultar, <ProdutoDetalhePage />)}
+          />
+          <Route
+            path="produtos/:id/editar"
+            element={com(Permissoes.ProdutosGerenciar, <ProdutoFormPage />)}
+          />
+
+          <Route path="clientes" element={com(Permissoes.ClientesConsultar, <ClienteListaPage />)} />
+          <Route
+            path="clientes/novo"
+            element={com(Permissoes.ClientesGerenciar, <ClienteFormPage />)}
+          />
+          <Route
+            path="clientes/:id"
+            element={com(Permissoes.ClientesConsultar, <ClienteDetalhePage />)}
+          />
+          <Route
+            path="clientes/:id/editar"
+            element={com(Permissoes.ClientesGerenciar, <ClienteFormPage />)}
           />
 
           <Route path="*" element={<NaoEncontradoPage />} />

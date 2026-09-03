@@ -77,7 +77,13 @@ export function CampoCep({
           onChange?.(formatar(e.target.value));
         }}
         onBlur={consultar}
-        suffix={estado === 'consultando' ? <Spin size="small" /> : null}
+        // sufixo sempre presente (largura fixa) — evita o Input perder o foco
+        // quando o Spin aparece/some (gotcha do antd).
+        suffix={
+          <span className="inline-flex w-4 justify-center">
+            {estado === 'consultando' ? <Spin size="small" /> : null}
+          </span>
+        }
       />
       {estado === 'nao-encontrado' && (
         <span className="mt-1 block text-xs text-alerta-texto">

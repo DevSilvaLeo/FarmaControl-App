@@ -235,6 +235,26 @@ acrescido de: "verificado nas 3 larguras" e "sem regressão no showcase
 **Gates locais:** lint / typecheck / test:unit (61) / build — verdes.
 Bundle ~1,6 MB (514 KB gzip) — code-splitting por rota fica para a Etapa 8.
 
+### Notas de implementação (Etapa 4 — Produto & Cliente, 2026-09-03)
+
+Construída **contra o Swagger real** (backend levantado localmente). Detalhe
+em `07` §7.8. Pontos principais:
+
+- **`CampoEndereco`** (`modulos/geografia/componentes/`): CEP autopreenche via
+  `GET /geografia/ceps/{n}` + Estado→Cidade (autocomplete escopado pelo estado).
+- **Campos de formulário reutilizáveis** em `compartilhado/ui/campos.tsx`
+  (`CampoSelect`/`CampoSwitch`/`CampoNumero`/`CampoMoeda`/`CampoData`) — todos
+  via `Controller` do RHF. Reduzem drasticamente o markup das Etapas 4+.
+- **`aplicarErrosDeCampo`** (`compartilhado/api/errosDeFormulario.ts`): mapeia o
+  400 do backend nos campos, tratando o prefixo `Dados.` e o PascalCase.
+- Cadastros de apoio (Marca/Grupo/Depto/Subgrupo/Lab/Unidade e Segmentos) via
+  modais dentro do próprio formulário; endereços/contatos do Cliente são
+  **append-only** (o backend só expõe `POST`).
+- Ações separadas mantidas: `PUT .../precos`, `PUT .../unidades`,
+  `PUT .../limite-credito`, `POST .../bloquear`.
+
+**Gates:** lint / typecheck / test:unit (71) / build — verdes.
+
 ---
 
 ## 5.6 Etapa 7 — Painel inicial
