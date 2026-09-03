@@ -3,9 +3,11 @@
 Frontend web (SPA) do **FarmaControl**, um ERP de distribuição/atacado
 farmacêutico B2B. Consome a API REST de `api/TheOne.FarmaControl`.
 
-> **Estado:** Etapa 0 (Fundação) concluída — scaffold em Vite, tema/tokens,
-> AppShell mobile-first e tela de Diagnóstico consumindo a API. Ver o roadmap
-> de UX em [`.docs/05-etapas-e-roadmap-ux.md`](.docs/05-etapas-e-roadmap-ux.md).
+> **Estado:** Etapas 0 e 1 concluídas — fundação (Vite, tema/tokens, AppShell
+> mobile-first, `/diagnostico`) e Design System (UI Kit em `compartilhado/ui/`,
+> hooks cross-cutting, cliente HTTP com renovação de token, `usePermissao`,
+> showcase em `/estilo`). Ver o roadmap de UX em
+> [`.docs/05-etapas-e-roadmap-ux.md`](.docs/05-etapas-e-roadmap-ux.md).
 
 ## Stack
 

@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { Alert, Button, Descriptions, Skeleton, Tag } from 'antd';
 import { PageHeader } from '@/compartilhado/ui/PageHeader';
 import { useDiagnostico } from '../hooks/useDiagnostico';
@@ -90,6 +91,10 @@ export function DiagnosticoPage() {
           </details>
         </div>
       )}
+
+      <p className="mt-6 text-xs text-neutral-400">
+        UI Kit / tokens: <Link to="/estilo">/estilo</Link> (showcase interno — Etapa 1)
+      </p>
     </>
   );
 }

@@ -16,6 +16,21 @@ if (!window.matchMedia) {
   })) as unknown as typeof window.matchMedia;
 }
 
+// `ResizeObserver` — usado por Modal/Drawer/Tabs do Ant Design (rc-component).
+if (!('ResizeObserver' in globalThis)) {
+  class ResizeObserverMock {
+    observe(): void {}
+    unobserve(): void {}
+    disconnect(): void {}
+  }
+  globalThis.ResizeObserver = ResizeObserverMock as unknown as typeof ResizeObserver;
+}
+
+// `scrollTo` — chamado por alguns componentes ao focar/abrir.
+if (!window.scrollTo) {
+  window.scrollTo = (() => {}) as typeof window.scrollTo;
+}
+
 afterEach(() => {
   cleanup();
 });

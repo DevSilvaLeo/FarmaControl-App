@@ -40,7 +40,7 @@ export function NavDrawer({ aberto, aoFechar }: { aberto: boolean; aoFechar: () 
       placement="left"
       open={aberto}
       onClose={aoFechar}
-      width={280}
+      size="default"
       styles={{ body: { padding: 0 } }}
     >
       <Menu

@@ -107,6 +107,35 @@ divergente da norma.
   (`.spec/05` §5.2).
 - Nenhuma tela de negócio criada — 100% infraestrutura.
 
+### Notas de implementação (Etapa 1 — concluída 2026-09-03)
+
+Divergências e decisões registradas (disciplina de `.spec/03` §3.11 item 12):
+
+- **`DataTable.usarConsulta`**: assinatura simplificada para
+  `() => UseQueryResult<PagedResult<T>>` (o hook de consulta do módulo lê
+  paginação/filtros da URL por conta própria via `usePaginacao`/
+  `useFiltrosDeUrl`), em vez do `(filtros, paginacao) => …` esboçado em
+  `.spec/05` §5.3 — mesma responsabilidade, menos acoplamento.
+- **`usePermissao` — mock de dev**: enquanto não há login (Etapa 3), sem
+  `perfil` na sessão e em `import.meta.env.DEV`, o hook libera tudo, a menos
+  que `VITE_PERMISSOES_MOCK='off'`. Em produção, sem perfil ⇒ sem permissão.
+- **`useMutacaoComErro` no 403**: em contexto de *mutação* usa toast (a página
+  "Acesso negado" é para *rotas*, via guarda — Etapa 3). O 401 é silencioso
+  (o interceptor do `clienteHttp` já renova ou desloga).
+- **Renovação de token**: interceptor + single-flight (`renovacaoDeToken.ts`)
+  implementados e testados (2 requisições concorrentes ⇒ 1 chamada). O
+  contrato exato de `POST /autenticacao/token/renovar` é fixado na Etapa 3.
+- **Datas**: conversão UTC↔`America/Sao_Paulo` via `dayjs` + plugins
+  `utc`/`timezone` (dayjs já é peer do antd) em vez de adicionar `date-fns-tz`.
+- **Testes**: `jsdom` recebe polyfills de `ResizeObserver`, `matchMedia` e
+  `scrollTo` no `tests/unit/setup.ts` (exigidos por Modal/Drawer/Tabs do antd).
+- Deps adicionadas nesta etapa: `zustand`, `react-hook-form`,
+  `@hookform/resolvers`, `zod`, `decimal.js`.
+
+**Gates locais:** lint / typecheck / test:unit (37) / build — verdes.
+Bundle ~1,1 MB (antd + decimal.js + dayjs) — code-splitting fica para a
+Etapa 8 (otimização), não é bloqueio.
+
 ---
 
 ## 5.4 Etapa 2 — Blueprints responsivos

@@ -64,4 +64,8 @@ do frontend (as que têm API pronta no backend). Identidade visual: proposta
 placeholder do Ant Design citado em `.spec/04` §4.7 (PAF-01) — sujeita à
 auditoria formal de contraste na Etapa 8.
 
-Próximo passo: Etapa 0 (ver `05-etapas-e-roadmap-ux.md`).
+**Progresso de implementação:**
+- **Etapa 0** (fundação: CRA→Vite, tokens, AppShell mobile-first, `/diagnostico`) — concluída (2026-09-02).
+- **Etapa 1** (Design System: tokens, UI Kit, hooks cross-cutting, `/estilo`) — concluída (2026-09-03). Ver "Notas de implementação" em `05-etapas-e-roadmap-ux.md` §5.3.
+
+Próximo passo: Etapa 2 — Blueprints responsivos (ver `05-etapas-e-roadmap-ux.md`).
