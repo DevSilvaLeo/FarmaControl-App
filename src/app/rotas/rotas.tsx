@@ -39,6 +39,7 @@ import { VendedorListaPage } from '@/modulos/vendedores/paginas/VendedorListaPag
 import { VendedorFormPage } from '@/modulos/vendedores/paginas/VendedorFormPage';
 import { VendedorDetalhePage } from '@/modulos/vendedores/paginas/VendedorDetalhePage';
 import { DepositoListaPage } from '@/modulos/estoque/paginas/DepositoListaPage';
+import { CentroCustoListaPage } from '@/modulos/centrosCusto/paginas/CentroCustoListaPage';
 import { MovimentacaoPage } from '@/modulos/estoque/paginas/MovimentacaoPage';
 import { PosicaoPage } from '@/modulos/estoque/paginas/PosicaoPage';
 import { KardexPage } from '@/modulos/estoque/paginas/KardexPage';
@@ -202,6 +203,10 @@ export function Rotas() {
           <Route
             path="estoque/depositos"
             element={com(Permissoes.EstoqueConsultar, <DepositoListaPage />)}
+          />
+          <Route
+            path="estoque/centros-custo"
+            element={com(Permissoes.CentrosCustoConsultar, <CentroCustoListaPage />)}
           />
           <Route
             path="estoque/posicao"

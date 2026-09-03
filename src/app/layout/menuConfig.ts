@@ -58,6 +58,7 @@ export const menuPrincipal: ItemMenu[] = [
       { chave: 'kardex', rotulo: 'Kardex', caminho: '/estoque/kardex', permissao: 'Estoque.Consultar', fase: 'Fase 5' },
       { chave: 'lotes-a-vencer', rotulo: 'Lotes a vencer', caminho: '/estoque/lotes-a-vencer', permissao: 'Estoque.Consultar', fase: 'Fase 5' },
       { chave: 'depositos', rotulo: 'Depósitos', caminho: '/estoque/depositos', permissao: 'Estoque.Consultar', fase: 'Fase 5' },
+      { chave: 'centros-custo', rotulo: 'Centros de custo', caminho: '/estoque/centros-custo', permissao: 'CentrosCusto.Consultar', fase: 'Fase 6' },
     ],
   },
   {

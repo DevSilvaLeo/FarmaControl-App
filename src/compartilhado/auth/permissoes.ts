@@ -35,9 +35,15 @@ export const Permissoes = {
   // Estoque
   EstoqueConsultar: 'Estoque.Consultar',
   EstoqueGerenciarDepositos: 'Estoque.GerenciarDepositos',
+  EstoqueGerenciarParametros: 'Estoque.GerenciarParametros',
   EstoqueMovimentarEntrada: 'Estoque.MovimentarEntrada',
   EstoqueMovimentarSaida: 'Estoque.MovimentarSaida',
   EstoqueAjustar: 'Estoque.Ajustar',
+  EstoqueInventariar: 'Estoque.Inventariar',
+
+  // Centros de custo
+  CentrosCustoConsultar: 'CentrosCusto.Consultar',
+  CentrosCustoGerenciar: 'CentrosCusto.Gerenciar',
 } as const;
 
 export type ChavePermissao = (typeof Permissoes)[keyof typeof Permissoes];

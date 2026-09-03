@@ -24,6 +24,7 @@ export const mapaDePermissoes: Record<string, string | undefined> = {
   '/vendedores': Permissoes.VendedoresConsultar,
 
   '/estoque/depositos': Permissoes.EstoqueConsultar,
+  '/estoque/centros-custo': Permissoes.CentrosCustoConsultar,
   '/estoque/posicao': Permissoes.EstoqueConsultar,
   '/estoque/kardex': Permissoes.EstoqueConsultar,
   '/estoque/lotes-a-vencer': Permissoes.EstoqueConsultar,
