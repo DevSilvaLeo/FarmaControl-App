@@ -2,12 +2,12 @@ import { create } from 'zustand';
 
 /**
  * Estado de sessão (`.spec/05` §5.2, `.spec/12` D-05):
- *  - `accessToken`  → apenas em memória (nunca persistido) — reduz janela de XSS.
- *  - `refreshToken` → `localStorage` (sobrevive a F5) — risco residual aceito.
+ *  - `accessToken`  → `sessionStorage` (sobrevive a F5 na mesma aba, some ao
+ *    fechar). Antes era só memória; passou a persistir na aba porque um F5 ou
+ *    navegação rápida durante o refresh silencioso podia abortar a rotação do
+ *    refresh token e derrubar a sessão (bloco de acabamento da homologação).
+ *  - `refreshToken` → `localStorage` (sobrevive a fechar/reabrir) — risco residual aceito.
  *  - `perfil`       → `MeuPerfilDto` carregado no login.
- *
- * Na Etapa 1 o store existe com o formato final, mas ainda SEM login real
- * (populado na Etapa 3). `usePermissao` roda sobre um mock até lá (`.spec/05` §5.6).
  */
 
 export interface MeuPerfilDto {
@@ -25,6 +25,7 @@ export interface MeuPerfilDto {
 }
 
 const CHAVE_REFRESH = 'farmacontrol:refresh-token';
+const CHAVE_ACCESS = 'farmacontrol:access-token';
 
 function lerRefreshToken(): string | null {
   try {
@@ -43,6 +44,23 @@ function gravarRefreshToken(token: string | null): void {
   }
 }
 
+function lerAccessToken(): string | null {
+  try {
+    return sessionStorage.getItem(CHAVE_ACCESS);
+  } catch {
+    return null;
+  }
+}
+
+function gravarAccessToken(token: string | null): void {
+  try {
+    if (token) sessionStorage.setItem(CHAVE_ACCESS, token);
+    else sessionStorage.removeItem(CHAVE_ACCESS);
+  } catch {
+    /* ambiente sem storage — ignora */
+  }
+}
+
 interface SessaoState {
   accessToken: string | null;
   refreshToken: string | null;
@@ -56,22 +74,27 @@ interface SessaoState {
 }
 
 export const useSessaoStore = create<SessaoState>((set) => ({
-  accessToken: null,
+  accessToken: lerAccessToken(),
   refreshToken: lerRefreshToken(),
   perfil: null,
   autenticado: false,
 
   definirTokens: ({ accessToken, refreshToken }) => {
     gravarRefreshToken(refreshToken);
+    gravarAccessToken(accessToken);
     set((s) => ({ accessToken, refreshToken, autenticado: s.perfil != null }));
   },
 
-  definirAccessToken: (accessToken) => set({ accessToken }),
+  definirAccessToken: (accessToken) => {
+    gravarAccessToken(accessToken);
+    set({ accessToken });
+  },
 
   definirPerfil: (perfil) => set((s) => ({ perfil, autenticado: s.accessToken != null })),
 
   limpar: () => {
     gravarRefreshToken(null);
+    gravarAccessToken(null);
     set({ accessToken: null, refreshToken: null, perfil: null, autenticado: false });
   },
 }));
