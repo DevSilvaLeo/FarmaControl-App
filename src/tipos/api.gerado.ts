@@ -599,6 +599,206 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/centros-custo": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: {
+                    incluirInativos?: boolean;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["FarmaControl.Application.Estoque.CentroCustoDto"][];
+                        "application/json": components["schemas"]["FarmaControl.Application.Estoque.CentroCustoDto"][];
+                        "text/json": components["schemas"]["FarmaControl.Application.Estoque.CentroCustoDto"][];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["FarmaControl.Application.Estoque.CriarCentroCustoCommand"];
+                    "text/json": components["schemas"]["FarmaControl.Application.Estoque.CriarCentroCustoCommand"];
+                    "application/*+json": components["schemas"]["FarmaControl.Application.Estoque.CriarCentroCustoCommand"];
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": number;
+                        "application/json": number;
+                        "text/json": number;
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/centros-custo/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["FarmaControl.Application.Estoque.CentroCustoDto"];
+                        "application/json": components["schemas"]["FarmaControl.Application.Estoque.CentroCustoDto"];
+                        "text/json": components["schemas"]["FarmaControl.Application.Estoque.CentroCustoDto"];
+                    };
+                };
+            };
+        };
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["FarmaControl.API.Controllers.CentrosCustoController.AtualizarCentroCustoRequest"];
+                    "text/json": components["schemas"]["FarmaControl.API.Controllers.CentrosCustoController.AtualizarCentroCustoRequest"];
+                    "application/*+json": components["schemas"]["FarmaControl.API.Controllers.CentrosCustoController.AtualizarCentroCustoRequest"];
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/centros-custo/{id}/inativar": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/centros-custo/{id}/reativar": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/clientes": {
         parameters: {
             query?: never;
@@ -1724,6 +1924,7 @@ export interface paths {
                 query?: {
                     ProdutoId?: number;
                     DepositoId?: number;
+                    Origem?: components["schemas"]["FarmaControl.Domain.Enums.OrigemMovimentoEstoque"];
                     DeUtc?: string;
                     AteUtc?: string;
                     Pagina?: number;
@@ -1791,6 +1992,120 @@ export interface paths {
         put?: never;
         post?: never;
         delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/estoque/parametros/{produtoId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    produtoId: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["FarmaControl.Application.Estoque.ParametroEstoqueDepositoDto"][];
+                        "application/json": components["schemas"]["FarmaControl.Application.Estoque.ParametroEstoqueDepositoDto"][];
+                        "text/json": components["schemas"]["FarmaControl.Application.Estoque.ParametroEstoqueDepositoDto"][];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/estoque/parametros": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["FarmaControl.Application.Estoque.DefinirParametroEstoqueDepositoCommand"];
+                    "text/json": components["schemas"]["FarmaControl.Application.Estoque.DefinirParametroEstoqueDepositoCommand"];
+                    "application/*+json": components["schemas"]["FarmaControl.Application.Estoque.DefinirParametroEstoqueDepositoCommand"];
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/estoque/parametros/{produtoId}/{depositoId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    produtoId: number;
+                    depositoId: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
         options?: never;
         head?: never;
         patch?: never;
@@ -4003,6 +4318,10 @@ export interface components {
         "FarmaControl.API.Controllers.CadastrosProdutoController.NomeRequest": {
             nome?: string;
         };
+        "FarmaControl.API.Controllers.CentrosCustoController.AtualizarCentroCustoRequest": {
+            nome?: string;
+            codigo?: string;
+        };
         "FarmaControl.API.Controllers.ClientesController.ContatoRequest": {
             nome?: string;
             cargo?: string | null;
@@ -4316,11 +4635,32 @@ export interface components {
             motivo?: components["schemas"]["FarmaControl.Domain.Enums.MotivoAjuste"];
             observacao?: string | null;
         };
+        "FarmaControl.Application.Estoque.CentroCustoDto": {
+            /** Format: int32 */
+            id?: number;
+            nome?: string;
+            codigo?: string;
+            ativo?: boolean;
+        };
+        "FarmaControl.Application.Estoque.CriarCentroCustoCommand": {
+            nome?: string;
+            codigo?: string;
+        };
         "FarmaControl.Application.Estoque.CriarDepositoCommand": {
             nome?: string;
             codigo?: string;
             tipo?: components["schemas"]["FarmaControl.Domain.Enums.TipoDeposito"];
             padrao?: boolean;
+        };
+        "FarmaControl.Application.Estoque.DefinirParametroEstoqueDepositoCommand": {
+            /** Format: int32 */
+            produtoId?: number;
+            /** Format: int32 */
+            depositoId?: number;
+            /** Format: double */
+            estoqueMinimo?: number;
+            /** Format: double */
+            estoqueMaximo?: number;
         };
         "FarmaControl.Application.Estoque.DepositoDto": {
             /** Format: int32 */
@@ -4356,6 +4696,7 @@ export interface components {
             motivoAjuste?: string | null;
             /** Format: int32 */
             depositoId?: number;
+            depositoNome?: string;
             lote?: string | null;
             /** Format: date-time */
             validadeUtc?: string | null;
@@ -4368,6 +4709,17 @@ export interface components {
             observacao?: string | null;
             /** Format: int32 */
             usuarioId?: number;
+            usuarioNome?: string;
+        };
+        "FarmaControl.Application.Estoque.ParametroEstoqueDepositoDto": {
+            /** Format: int32 */
+            depositoId?: number;
+            depositoNome?: string;
+            /** Format: double */
+            estoqueMinimo?: number;
+            /** Format: double */
+            estoqueMaximo?: number;
+            personalizado?: boolean;
         };
         "FarmaControl.Application.Estoque.PosicaoEstoqueDto": {
             /** Format: int32 */
@@ -5041,6 +5393,8 @@ export interface components {
         "FarmaControl.Domain.Enums.MotivoAjuste": "Perda" | "Quebra" | "Vencimento" | "Achado" | "CorrecaoInventario" | "Outro";
         /** @enum {string} */
         "FarmaControl.Domain.Enums.OrigemMercadoria": "Nacional" | "EstrangeiraImportacaoDireta" | "EstrangeiraAdquiridaNoMercadoInterno" | "NacionalConteudoImportacaoSuperior40" | "NacionalProcessosProdutivosBasicos" | "NacionalConteudoImportacaoInferiorOuIgual40" | "EstrangeiraImportacaoDiretaSemSimilar" | "EstrangeiraMercadoInternoSemSimilar" | "NacionalConteudoImportacaoSuperior70";
+        /** @enum {string} */
+        "FarmaControl.Domain.Enums.OrigemMovimentoEstoque": "Avulso" | "Ajuste" | "Inventario" | "Pedido" | "Entrada" | "Transferencia";
         /** @enum {string} */
         "FarmaControl.Domain.Enums.SentidoMovimento": "Entrada" | "Saida";
         /** @enum {string} */

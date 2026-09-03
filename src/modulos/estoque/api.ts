@@ -53,6 +53,8 @@ export interface ListarPosicaoParams {
 export interface ListarKardexParams {
   produtoId: number;
   depositoId?: number;
+  /** Filtro por origem: 'Avulso' | 'Ajuste' | 'Inventario' | ... */
+  origem?: string;
   deUtc?: string;
   ateUtc?: string;
   pagina: number;

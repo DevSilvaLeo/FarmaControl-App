@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Table, Tag } from 'antd';
+import { Alert, Select, Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { PageHeader } from '@/compartilhado/ui/PageHeader';
 import { SectionCard } from '@/compartilhado/ui/SectionCard';
@@ -7,6 +7,7 @@ import { EmptyState } from '@/compartilhado/ui/EmptyState';
 import { DataHora } from '@/compartilhado/ui/DataHora';
 import { RangePickerBr } from '@/compartilhado/ui/DatePickerBr';
 import { usePaginacao } from '@/compartilhado/hooks/usePaginacao';
+import { normalizarErro } from '@/compartilhado/api/normalizarErro';
 import { formatarMoeda, formatarQuantidade } from '@/compartilhado/utils/formatarMoeda';
 import { rotular, rotulosOrigemMovimento, rotulosSentidoMovimento } from '@/compartilhado/utils/rotulosEnum';
 import { useKardex } from '../hooks/useEstoque';
@@ -18,6 +19,7 @@ export function KardexPage() {
   const [produtoId, setProdutoId] = useState<number>();
   const [produtoNome, setProdutoNome] = useState('');
   const [depositoId, setDepositoId] = useState<number>();
+  const [origem, setOrigem] = useState<string>();
   const [periodo, setPeriodo] = useState<[string | null, string | null] | null>(null);
   const { pagina, tamanhoPagina, irParaPagina } = usePaginacao();
 
@@ -26,6 +28,7 @@ export function KardexPage() {
       ? {
           produtoId,
           depositoId,
+          origem,
           deUtc: periodo[0],
           ateUtc: periodo[1],
           pagina,
@@ -33,7 +36,8 @@ export function KardexPage() {
         }
       : null;
 
-  const { data, isLoading } = useKardex(params);
+  const { data, isLoading, isError, error } = useKardex(params);
+  const erro404 = isError && normalizarErro(error).status === 404;
 
   const colunas: ColumnsType<MovimentoEstoqueDto> = [
     {
@@ -51,7 +55,7 @@ export function KardexPage() {
     },
     { title: 'Origem', dataIndex: 'origem', render: (v: string) => <Tag>{rotular(rotulosOrigemMovimento, v)}</Tag> },
     { title: 'Motivo', dataIndex: 'motivoAjuste', render: (v: string | null) => v || '—' },
-    { title: 'Depósito', dataIndex: 'depositoId', render: (v: number) => `#${v}` },
+    { title: 'Depósito', dataIndex: 'depositoNome' },
     { title: 'Lote', dataIndex: 'lote', render: (v: string | null) => <span className="mono">{v || '—'}</span> },
     { title: 'Validade', dataIndex: 'validadeUtc', render: (v: string | null) => (v ? <DataHora valorUtc={v} somenteData /> : '—') },
     {
@@ -76,7 +80,7 @@ export function KardexPage() {
       render: (v: number | null) => (v != null ? formatarMoeda(v) : '—'),
     },
     { title: 'Observação', dataIndex: 'observacao', render: (v: string | null) => v || '—' },
-    { title: 'Usuário', dataIndex: 'usuarioId', render: (v: number) => `#${v}` },
+    { title: 'Usuário', dataIndex: 'usuarioNome' },
   ];
 
   return (
@@ -107,6 +111,21 @@ export function KardexPage() {
             <span className="mb-1 block text-sm font-medium text-neutral-600">Depósito</span>
             <SelectDeposito value={depositoId ?? null} onChange={(v) => setDepositoId(v ?? undefined)} permitirVazio />
           </label>
+          <label className="block">
+            <span className="mb-1 block text-sm font-medium text-neutral-600">Origem</span>
+            <Select
+              className="w-full"
+              allowClear
+              placeholder="Todas"
+              value={origem}
+              onChange={(v) => setOrigem(v)}
+              options={[
+                { value: 'Avulso', label: rotular(rotulosOrigemMovimento, 'Avulso') },
+                { value: 'Ajuste', label: rotular(rotulosOrigemMovimento, 'Ajuste') },
+                { value: 'Inventario', label: rotular(rotulosOrigemMovimento, 'Inventario') },
+              ]}
+            />
+          </label>
         </div>
       </SectionCard>
 
@@ -115,6 +134,13 @@ export function KardexPage() {
           variante="semResultado"
           titulo="Selecione um produto e um período"
           descricao="O Kardex exige produto e intervalo de datas."
+        />
+      ) : erro404 ? (
+        <Alert
+          type="warning"
+          showIcon
+          title="Produto não encontrado"
+          description="O produto selecionado não existe mais ou não pertence a esta empresa. Escolha outro produto."
         />
       ) : (
         <>

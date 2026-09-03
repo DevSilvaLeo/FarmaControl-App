@@ -1,6 +1,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useMutacaoComErro } from '@/compartilhado/hooks/useMutacaoComErro';
 import { usarListaComoPaged } from '@/compartilhado/hooks/usarListaComoPaged';
+import { normalizarErro } from '@/compartilhado/api/normalizarErro';
 import {
   consultasApi,
   depositosApi,
@@ -124,6 +125,8 @@ export function useKardex(params: ListarKardexParams | null) {
     queryFn: () => consultasApi.kardex(params!),
     enabled: params != null && params.produtoId > 0,
     placeholderData: (a) => a,
+    // 404 (produto inexistente) é definitivo — não readianta repetir.
+    retry: (tentativa, erro) => normalizarErro(erro).status !== 404 && tentativa < 2,
   });
 }
 export function useLotesAVencer(dias: number, depositoId?: number) {

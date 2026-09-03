@@ -53,6 +53,7 @@ export interface MovimentoEstoqueDto {
   origem: string;
   motivoAjuste?: string | null;
   depositoId: number;
+  depositoNome: string;
   lote?: string | null;
   validadeUtc?: string | null;
   quantidade: number;
@@ -60,6 +61,7 @@ export interface MovimentoEstoqueDto {
   custoUnitario?: number | null;
   observacao?: string | null;
   usuarioId: number;
+  usuarioNome: string;
 }
 
 export interface LoteAVencerDto {
