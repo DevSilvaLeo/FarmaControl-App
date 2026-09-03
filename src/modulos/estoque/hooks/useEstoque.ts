@@ -1,15 +1,18 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useMutacaoComErro } from '@/compartilhado/hooks/useMutacaoComErro';
 import { usarListaComoPaged } from '@/compartilhado/hooks/usarListaComoPaged';
+import { normalizarErro } from '@/compartilhado/api/normalizarErro';
 import {
   consultasApi,
   depositosApi,
   movimentacoesApi,
+  parametrosEstoqueApi,
   type ListarKardexParams,
   type ListarPosicaoParams,
 } from '../api';
 import type {
   AjustarEstoqueBody,
+  DefinirParametroEstoqueBody,
   RegistrarEntradaBody,
   RegistrarSaidaBody,
   TipoDeposito,
@@ -122,6 +125,8 @@ export function useKardex(params: ListarKardexParams | null) {
     queryFn: () => consultasApi.kardex(params!),
     enabled: params != null && params.produtoId > 0,
     placeholderData: (a) => a,
+    // 404 (produto inexistente) é definitivo — não readianta repetir.
+    retry: (tentativa, erro) => normalizarErro(erro).status !== 404 && tentativa < 2,
   });
 }
 export function useLotesAVencer(dias: number, depositoId?: number) {
@@ -129,4 +134,31 @@ export function useLotesAVencer(dias: number, depositoId?: number) {
     queryKey: ['lotes-a-vencer', dias, depositoId],
     queryFn: () => consultasApi.lotesAVencer(dias, depositoId),
   });
+}
+
+// ---------------- Parâmetros de estoque por depósito ----------------
+export function useParametrosEstoque(produtoId: number | undefined) {
+  return useQuery({
+    queryKey: ['parametros-estoque', produtoId],
+    queryFn: () => parametrosEstoqueApi.doProduto(produtoId!),
+    enabled: produtoId != null && produtoId > 0,
+  });
+}
+
+export function useSalvarParametroEstoque(produtoId: number | undefined) {
+  const qc = useQueryClient();
+  const invalidar = () => {
+    void qc.invalidateQueries({ queryKey: ['parametros-estoque', produtoId] });
+    void qc.invalidateQueries({ queryKey: ['posicao'] });
+  };
+  return {
+    definir: useMutacaoComErro((body: DefinirParametroEstoqueBody) => parametrosEstoqueApi.definir(body), {
+      mensagemSucesso: 'Parâmetro do depósito salvo.',
+      onSuccess: invalidar,
+    }),
+    remover: useMutacaoComErro(
+      (depositoId: number) => parametrosEstoqueApi.remover(produtoId!, depositoId),
+      { mensagemSucesso: 'Depósito voltou ao mínimo/máximo do produto.', onSuccess: invalidar },
+    ),
+  };
 }

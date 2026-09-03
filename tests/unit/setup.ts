@@ -33,4 +33,10 @@ if (!window.scrollTo) {
 
 afterEach(() => {
   cleanup();
+  try {
+    localStorage.clear();
+    sessionStorage.clear();
+  } catch {
+    /* jsdom sem storage — ignora */
+  }
 });

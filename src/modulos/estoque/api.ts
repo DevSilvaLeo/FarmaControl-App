@@ -2,9 +2,11 @@ import { clienteHttp } from '@/compartilhado/api/clienteHttp';
 import type { PagedResult } from '@/compartilhado/api/tipos';
 import type {
   AjustarEstoqueBody,
+  DefinirParametroEstoqueBody,
   DepositoDto,
   LoteAVencerDto,
   MovimentoEstoqueDto,
+  ParametroEstoqueDepositoDto,
   PosicaoEstoqueDto,
   PosicaoProdutoDepositoDto,
   RegistrarEntradaBody,
@@ -51,6 +53,8 @@ export interface ListarPosicaoParams {
 export interface ListarKardexParams {
   produtoId: number;
   depositoId?: number;
+  /** Filtro por origem: 'Avulso' | 'Ajuste' | 'Inventario' | ... */
+  origem?: string;
   deUtc?: string;
   ateUtc?: string;
   pagina: number;
@@ -76,4 +80,16 @@ export const consultasApi = {
     clienteHttp
       .get<LoteAVencerDto[]>('/estoque/lotes-a-vencer', { params: { dias, depositoId } })
       .then((r) => r.data),
+};
+
+export const parametrosEstoqueApi = {
+  /** Uma linha por depósito, com o mín/máx efetivo e `personalizado`. */
+  doProduto: (produtoId: number) =>
+    clienteHttp
+      .get<ParametroEstoqueDepositoDto[]>(`/estoque/parametros/${produtoId}`)
+      .then((r) => r.data),
+  definir: (body: DefinirParametroEstoqueBody) =>
+    clienteHttp.put('/estoque/parametros', body).then(() => undefined),
+  remover: (produtoId: number, depositoId: number) =>
+    clienteHttp.delete(`/estoque/parametros/${produtoId}/${depositoId}`).then(() => undefined),
 };

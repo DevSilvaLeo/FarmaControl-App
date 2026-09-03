@@ -8,6 +8,7 @@ import { PageHeader } from '@/compartilhado/ui/PageHeader';
 import { SectionCard } from '@/compartilhado/ui/SectionCard';
 import { CampoTexto } from '@/compartilhado/ui/CampoTexto';
 import { StatusTag } from '@/compartilhado/ui/StatusTag';
+import { config } from '@/compartilhado/config';
 import { useSessaoStore } from '@/compartilhado/auth/sessaoStore';
 import { alterarSenhaSchema, type AlterarSenhaForm } from '../validacao';
 import {
@@ -130,41 +131,45 @@ export function MinhaContaPage() {
         </form>
       </SectionCard>
 
-      <SectionCard titulo="Verificação em duas etapas">
-        {perfil?.doisFatoresHabilitado ? (
-          <div className="flex flex-col gap-3">
-            <div>
-              <StatusTag variante="ativo" rotulo="Ativada" />
+      {(config.doisFatoresVisivel || perfil?.doisFatoresHabilitado) && (
+        <SectionCard titulo="Verificação em duas etapas">
+          {perfil?.doisFatoresHabilitado ? (
+            <div className="flex flex-col gap-3">
+              <div>
+                <StatusTag variante="ativo" rotulo="Ativada" />
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <Button danger onClick={() => setDesativando(true)}>
+                  Desativar
+                </Button>
+                <Button
+                  onClick={() => logout.mutate(true, { onSuccess: () => navigate('/entrar') })}
+                >
+                  Sair de todos os dispositivos
+                </Button>
+              </div>
             </div>
-            <div className="flex flex-wrap gap-2">
-              <Button danger onClick={() => setDesativando(true)}>
-                Desativar
-              </Button>
-              <Button onClick={() => logout.mutate(true, { onSuccess: () => navigate('/entrar') })}>
-                Sair de todos os dispositivos
-              </Button>
+          ) : configurando ? (
+            <ConfigurarDoisFatores
+              aoConcluir={() => {
+                setConfigurando(false);
+                void recarregarConta();
+              }}
+            />
+          ) : (
+            <div className="flex flex-col gap-3">
+              <p className="m-0 text-sm text-neutral-600">
+                Adicione uma camada extra de segurança usando um aplicativo autenticador.
+              </p>
+              <div>
+                <Button type="primary" onClick={() => setConfigurando(true)}>
+                  Configurar
+                </Button>
+              </div>
             </div>
-          </div>
-        ) : configurando ? (
-          <ConfigurarDoisFatores
-            aoConcluir={() => {
-              setConfigurando(false);
-              void recarregarConta();
-            }}
-          />
-        ) : (
-          <div className="flex flex-col gap-3">
-            <p className="m-0 text-sm text-neutral-600">
-              Adicione uma camada extra de segurança usando um aplicativo autenticador.
-            </p>
-            <div>
-              <Button type="primary" onClick={() => setConfigurando(true)}>
-                Configurar
-              </Button>
-            </div>
-          </div>
-        )}
-      </SectionCard>
+          )}
+        </SectionCard>
+      )}
 
       <Modal
         open={desativando}

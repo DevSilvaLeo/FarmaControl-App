@@ -46,10 +46,10 @@ export function SidebarNav({
 
   return (
     <aside
-      className="hidden shrink-0 flex-col border-r border-neutral-200 bg-white transition-[width] duration-200 lg:flex"
-      style={{ width: colapsada ? 64 : 240 }}
+      className="sticky top-0 hidden h-screen shrink-0 flex-col border-r border-neutral-200 bg-white transition-[width] duration-200 lg:flex"
+      style={{ width: colapsada ? 80 : 240 }}
     >
-      <div className="flex h-16 items-center justify-between px-3">
+      <div className="flex h-16 shrink-0 items-center justify-between px-3">
         {!colapsada && <Marca />}
         <Tooltip title={colapsada ? 'Expandir menu' : 'Recolher menu'} placement="right">
           <button
@@ -62,14 +62,14 @@ export function SidebarNav({
           </button>
         </Tooltip>
       </div>
-      <div className="min-h-0 flex-1 overflow-y-auto">
+      <div className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden">
         <Menu
           mode="inline"
           inlineCollapsed={colapsada}
           selectedKeys={[location.pathname]}
           defaultOpenKeys={colapsada ? [] : chavesAbertas}
           items={itens}
-          style={{ borderInlineEnd: 'none' }}
+          style={{ borderInlineEnd: 'none', width: colapsada ? '100%' : undefined }}
           onClick={({ key }) => {
             if (typeof key === 'string' && key.startsWith('/')) navigate(key);
           }}
