@@ -2,7 +2,8 @@ import { createElement, useMemo } from 'react';
 import { Drawer, Menu } from 'antd';
 import type { MenuProps } from 'antd';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { itemDiagnostico, menuPrincipal, type ItemMenu } from './menuConfig';
+import { itemDiagnostico, type ItemMenu } from './menuConfig';
+import { useMenuVisivel } from './useMenuVisivel';
 
 function paraItemAntd(item: ItemMenu): Required<MenuProps>['items'][number] {
   return {
@@ -20,18 +21,19 @@ function paraItemAntd(item: ItemMenu): Required<MenuProps>['items'][number] {
 export function NavDrawer({ aberto, aoFechar }: { aberto: boolean; aoFechar: () => void }) {
   const navigate = useNavigate();
   const location = useLocation();
+  const menu = useMenuVisivel();
 
   const itens = useMemo(
-    () => [...menuPrincipal.map(paraItemAntd), { type: 'divider' as const }, paraItemAntd(itemDiagnostico)],
-    [],
+    () => [...menu.map(paraItemAntd), { type: 'divider' as const }, paraItemAntd(itemDiagnostico)],
+    [menu],
   );
 
   const chavesAbertas = useMemo(
     () =>
-      menuPrincipal
+      menu
         .filter((grupo) => grupo.filhos?.some((f) => f.caminho && location.pathname.startsWith(f.caminho)))
         .map((grupo) => grupo.chave),
-    [location.pathname],
+    [menu, location.pathname],
   );
 
   return (

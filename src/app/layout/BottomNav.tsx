@@ -1,14 +1,14 @@
 import { createElement } from 'react';
 import { NavLink } from 'react-router-dom';
 import { EllipsisOutlined } from '@ant-design/icons';
-import { menuPrincipal } from './menuConfig';
+import { useMenuVisivel } from './useMenuVisivel';
 
 /**
  * Barra de navegação inferior fixa do mobile (`< lg` — `.docs/03` §3.1).
- * Máximo de 5 itens: os 4 módulos de topo + "Mais" (abre o drawer completo).
+ * Máximo de 5 itens: os 4 primeiros módulos visíveis + "Mais" (abre o drawer).
  */
 export function BottomNav({ aoAbrirMais }: { aoAbrirMais: () => void }) {
-  const itens = menuPrincipal.slice(0, 4);
+  const itens = useMenuVisivel().slice(0, 4);
 
   return (
     <nav

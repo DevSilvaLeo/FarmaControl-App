@@ -199,3 +199,26 @@ filiais como lista de cards + botão "Adicionar filial" → drawer.
   não conseguirá mais entrar no sistema.").
 - Erros de negócio: mensagem do backend verbatim (`.spec/03` §3.5).
 - Nunca "Ops!" / "Algo mágico aconteceu" — tom operacional, direto, PT-BR.
+
+## 6.10 Implementação (Etapa 3 — concluída 2026-09-03)
+
+| Tela / peça | Arquivo |
+|---|---|
+| Login | `modulos/autenticacao/paginas/EntrarPage.tsx` |
+| Desafio 2FA + primeiro acesso | `.../paginas/DoisFatoresPage.tsx` + `componentes/{CampoCodigoTotp,ConfigurarDoisFatores}.tsx` |
+| Minha Conta (perfil, senha, 2FA) | `.../paginas/MinhaContaPage.tsx` |
+| Usuários (lista/criar/detalhe + perfis) | `modulos/sistema/paginas/Usuario*.tsx` |
+| Perfis (lista/form/detalhe + matriz) | `.../paginas/Perfil*.tsx` + `componentes/MatrizPermissoes.tsx` |
+| Empresas e Filiais | `.../paginas/Empresa*.tsx` |
+| Guardas / sessão / menu | `compartilhado/auth/{BootstrapSessao,GuardaAutenticacao,GuardaPermissao}.tsx`, `app/rotas/mapaDePermissoes.ts`, `app/layout/useMenuVisivel.ts` |
+| API (a reconciliar c/ Swagger) | `modulos/autenticacao/api.ts`, `modulos/sistema/api.ts` |
+
+**Pendências conhecidas:**
+- Nomes de campo dos DTOs de auth/sistema espelham `.spec/06` mas **não foram
+  conferidos contra o Swagger real** — `npm run gerar-tipos` + reconciliar
+  `api.gerado.ts` quando a API estiver acessível (`agents.md` §7 itens 1–2).
+- Fluxo `ConfiguracaoTotpObrigatoria`: usa o token de desafio como bearer
+  temporário para os endpoints de configuração — validar o contrato exato
+  com o backend.
+- E2E de login (`tests/e2e/login.spec.ts`) pronto mas pulado até haver API de
+  teste + `E2E_LOGIN`/`E2E_SENHA`.

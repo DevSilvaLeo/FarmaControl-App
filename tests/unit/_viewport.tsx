@@ -2,6 +2,7 @@ import type { ReactElement } from 'react';
 import { render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { App as AntApp, ConfigProvider } from 'antd';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { temaAntd } from '@/compartilhado/tema/temaAntd';
 
 /**
@@ -35,12 +36,17 @@ export function mockViewport(width: number): () => void {
 
 export function renderEm(width: number, ui: ReactElement) {
   const restaurar = mockViewport(width);
+  const client = new QueryClient({
+    defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
+  });
   const utils = render(
-    <ConfigProvider theme={temaAntd}>
-      <AntApp>
-        <MemoryRouter>{ui}</MemoryRouter>
-      </AntApp>
-    </ConfigProvider>,
+    <QueryClientProvider client={client}>
+      <ConfigProvider theme={temaAntd}>
+        <AntApp>
+          <MemoryRouter>{ui}</MemoryRouter>
+        </AntApp>
+      </ConfigProvider>
+    </QueryClientProvider>,
   );
   return { ...utils, restaurar };
 }

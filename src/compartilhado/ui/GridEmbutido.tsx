@@ -72,7 +72,7 @@ export function GridEmbutido<T>({
 
   return (
     <div className="flex flex-col gap-3">
-      {avisos != null && <Alert type="warning" showIcon message={avisos} />}
+      {avisos != null && <Alert type="warning" showIcon title={avisos} />}
 
       {valor.length === 0 && <p className="m-0 text-sm text-neutral-500">{vazioTexto}</p>}
 

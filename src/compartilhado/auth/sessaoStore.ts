@@ -15,7 +15,9 @@ export interface MeuPerfilDto {
   nome: string;
   login: string;
   email: string;
+  empresaId?: number;
   empresaNome?: string;
+  filialId?: number;
   filialNome?: string;
   perfis: string[];
   permissoes: string[];

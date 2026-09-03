@@ -4,7 +4,8 @@ import type { MenuProps } from 'antd';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Marca } from '@/compartilhado/ui/Marca';
-import { itemDiagnostico, menuPrincipal, type ItemMenu } from './menuConfig';
+import { itemDiagnostico, type ItemMenu } from './menuConfig';
+import { useMenuVisivel } from './useMenuVisivel';
 
 function paraItemAntd(item: ItemMenu): Required<MenuProps>['items'][number] {
   return {
@@ -28,18 +29,19 @@ export function SidebarNav({
 }) {
   const navigate = useNavigate();
   const location = useLocation();
+  const menu = useMenuVisivel();
 
   const itens = useMemo(
-    () => [...menuPrincipal.map(paraItemAntd), { type: 'divider' as const }, paraItemAntd(itemDiagnostico)],
-    [],
+    () => [...menu.map(paraItemAntd), { type: 'divider' as const }, paraItemAntd(itemDiagnostico)],
+    [menu],
   );
 
   const chavesAbertas = useMemo(
     () =>
-      menuPrincipal
+      menu
         .filter((grupo) => grupo.filhos?.some((f) => f.caminho && location.pathname.startsWith(f.caminho)))
         .map((grupo) => grupo.chave),
-    [location.pathname],
+    [menu, location.pathname],
   );
 
   return (

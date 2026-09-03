@@ -33,6 +33,8 @@ export interface DataTableProps<T> {
   /** Estado do filtro para diferenciar "sem registro" de "sem resultado". */
   temFiltroAtivo?: boolean;
   aoLimparFiltros?: () => void;
+  /** Listas não paginadas (`IReadOnlyList` do backend) — esconde a paginação. */
+  semPaginacao?: boolean;
 }
 
 export function DataTable<T extends object>({
@@ -47,6 +49,7 @@ export function DataTable<T extends object>({
   renderCardMobile,
   temFiltroAtivo = false,
   aoLimparFiltros,
+  semPaginacao = false,
 }: DataTableProps<T>) {
   const { ehMobile, ehTablet } = useBreakpoint();
   const { pagina, tamanhoPagina, irParaPagina, definirTamanhoPagina } = usePaginacao();
@@ -159,7 +162,7 @@ export function DataTable<T extends object>({
         />
       )}
 
-      {dados && dados.totalRegistros > 0 && (
+      {!semPaginacao && dados && dados.totalRegistros > 0 && (
         <div className="flex justify-end">
           <Pagination
             current={pagina}

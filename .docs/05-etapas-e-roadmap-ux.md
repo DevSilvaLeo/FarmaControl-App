@@ -203,6 +203,38 @@ O critério de pronto de cada etapa é o do documento `.spec` correspondente
 acrescido de: "verificado nas 3 larguras" e "sem regressão no showcase
 `/estilo`".
 
+### Notas de implementação (Etapa 3 — Autenticação & Sistema, 2026-09-03)
+
+- **Sessão:** `BootstrapSessao` faz renovação silenciosa + carrega
+  `GET /minha-conta` no start; após login/2FA os hooks também carregam o
+  perfil antes de `autenticado` virar `true` (senão o `GuardaAutenticacao`
+  faria loop).
+- **Guardas:** `GuardaAutenticacao` (layout route → `<Outlet/>`),
+  `GuardaPermissao` (renderiza "Acesso negado", não redireciona). Mapa
+  rota→permissão em `app/rotas/mapaDePermissoes.ts`.
+- **Menu por permissão:** `useMenuVisivel()` filtra `menuConfig`; usado por
+  Sidebar/Drawer/BottomNav. Grupo sem filho visível some.
+- **Formulários:** `CampoTexto` (novo, em `compartilhado/ui/`) liga campos ao
+  React Hook Form via **`Controller`** — `register` cru não funciona com
+  inputs do antd (ref/onChange não são de `<input>` nativo). Padrão para as
+  Etapas 4+.
+- **2FA:** `Input.OTP` do antd para o código de 6 dígitos (auto-submit);
+  `qrcode.react` para o QR. O fluxo `ConfiguracaoTotpObrigatoria` (primeiro
+  acesso) usa o token de escopo restrito como bearer temporário — **a
+  reconciliar com o backend** quando a API estiver acessível.
+- **Contratos de API:** `modulos/autenticacao/api.ts` e `modulos/sistema/api.ts`
+  espelham `.spec/06` (Controllers reais), mas os nomes de campo dos DTOs
+  ainda **não foram conferidos contra o Swagger** — rodar `npm run gerar-tipos`
+  e reconciliar `api.gerado.ts` assim que a API subir (`agents.md` §7 itens 1–2).
+- **Listas não paginadas** (Perfis, Empresas — `IReadOnlyList`): `DataTable`
+  ganhou `semPaginacao` + helper `usarListaComoPaged`.
+- **E2E:** `tests/e2e/login.spec.ts` criado; pulado sem `E2E_LOGIN`/`E2E_SENHA`
+  + API de teste no ar (não roda no CI atual).
+- Deprecação do antd v6 corrigida de passagem: `<Alert message>` → `title`.
+
+**Gates locais:** lint / typecheck / test:unit (61) / build — verdes.
+Bundle ~1,6 MB (514 KB gzip) — code-splitting por rota fica para a Etapa 8.
+
 ---
 
 ## 5.6 Etapa 7 — Painel inicial

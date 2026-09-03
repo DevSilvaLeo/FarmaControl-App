@@ -46,7 +46,7 @@ export function DiagnosticoPage() {
         <Alert
           type="error"
           showIcon
-          message="Não foi possível consultar a API"
+          title="Não foi possível consultar a API"
           description={
             <>
               <p className="mb-1">
