@@ -8,6 +8,11 @@ const iconsEsm = fileURLToPath(
   new URL('./node_modules/@ant-design/icons/es/index.js', import.meta.url),
 );
 
+// Alvo do proxy `/api` em dev. O backend não configura CORS (`.spec/04` §4.2),
+// então o frontend fala com `/api` na mesma origem e o Vite encaminha para o
+// backend — igual ao que o Nginx faz no container.
+const alvoApi = process.env.API_PROXY_TARGET ?? 'http://localhost:5138';
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
@@ -19,6 +24,9 @@ export default defineConfig({
   server: {
     port: 5173,
     strictPort: true,
+    proxy: {
+      '/api': { target: alvoApi, changeOrigin: true },
+    },
   },
   test: {
     environment: 'jsdom',

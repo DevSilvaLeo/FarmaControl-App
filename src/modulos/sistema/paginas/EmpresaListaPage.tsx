@@ -41,7 +41,7 @@ export function EmpresaListaPage() {
       dataIndex: 'documento',
       render: (v: string) => <span className="mono">{formatarCnpj(v)}</span>,
     },
-    { title: 'Status', dataIndex: 'ativa', render: (v: boolean) => <TagAtivo ativo={v} /> },
+    { title: 'Status', dataIndex: 'ativo', render: (v: boolean) => <TagAtivo ativo={v} /> },
   ];
 
   return (
@@ -65,7 +65,7 @@ export function EmpresaListaPage() {
           <>
             <div className="flex items-center justify-between gap-2">
               <span className="font-medium text-neutral-800">{e.razaoSocial}</span>
-              <TagAtivo ativo={e.ativa} />
+              <TagAtivo ativo={e.ativo} />
             </div>
             <div className="mt-1 text-sm text-neutral-500">
               <span className="mono">{formatarCnpj(e.documento)}</span>

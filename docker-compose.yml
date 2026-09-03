@@ -1,0 +1,28 @@
+# Frontend do FarmaControl em container (Nginx servindo o build estático).
+#
+#   docker compose up -d --build      # sobe em http://localhost:8080
+#   docker compose down
+#
+# O backend roda no HOST (dotnet run, porta 5138). O Nginx do container faz
+# proxy de /api → backend, então o browser fala sempre na mesma origem (sem CORS).
+# Se o backend também estiver em container/rede Docker, ajuste BACKEND_URL.
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: farmacontrol-frontend:local
+    container_name: farmacontrol-frontend
+    ports:
+      - "${WEB_PORT:-8080}:80"
+    environment:
+      # Backend acessível a partir do container:
+      BACKEND_URL: "${BACKEND_URL:-http://host.docker.internal:5138}"
+      # Config de runtime do app (injetada em /env.js):
+      VITE_API_BASE_URL: "/api"
+      VITE_APP_NOME: "FarmaControl"
+    extra_hosts:
+      # Faz `host.docker.internal` resolver também no Docker Engine (Linux).
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped

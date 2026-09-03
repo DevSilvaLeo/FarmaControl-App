@@ -16,24 +16,23 @@ import {
   useUsuario,
 } from '../hooks/useSistema';
 
-function SeletorPerfis({ id, atuais }: { id: number; atuais: string[] }) {
+function SeletorPerfis({ id, atuais }: { id: number; atuais: number[] }) {
   const { ehDesktop } = useBreakpoint();
   const { data: perfis = [] } = useListarPerfis();
-  const [selecionados, setSelecionados] = useState<string[]>(atuais);
+  const [selecionados, setSelecionados] = useState<number[]>(atuais);
   useEffect(() => setSelecionados(atuais), [atuais]);
 
   const definir = useDefinirPerfisDoUsuario(id);
-  const nomes = perfis.map((p) => p.nome);
   const mudou = JSON.stringify([...selecionados].sort()) !== JSON.stringify([...atuais].sort());
 
   return (
     <div className="flex flex-col gap-3">
       {ehDesktop ? (
         <Transfer
-          dataSource={nomes.map((n) => ({ key: n, title: n }))}
+          dataSource={perfis.map((p) => ({ key: String(p.id), title: p.nome }))}
           titles={['Disponíveis', 'Atribuídos']}
-          targetKeys={selecionados}
-          onChange={(keys) => setSelecionados(keys as string[])}
+          targetKeys={selecionados.map(String)}
+          onChange={(keys) => setSelecionados((keys as string[]).map(Number))}
           render={(item) => item.title}
           listStyle={{ width: '100%', height: 260 }}
         />
@@ -41,8 +40,8 @@ function SeletorPerfis({ id, atuais }: { id: number; atuais: string[] }) {
         <Checkbox.Group
           className="flex flex-col gap-2"
           value={selecionados}
-          onChange={(v) => setSelecionados(v as string[])}
-          options={nomes.map((n) => ({ label: n, value: n }))}
+          onChange={(v) => setSelecionados(v as number[])}
+          options={perfis.map((p) => ({ label: p.nome, value: p.id }))}
         />
       )}
       <div>
@@ -120,7 +119,7 @@ export function UsuarioDetalhePage() {
         </SectionCard>
 
         <SectionCard titulo="Perfis" descricao="Definem as permissões deste usuário.">
-          <SeletorPerfis id={usuario.id} atuais={usuario.perfis ?? []} />
+          <SeletorPerfis id={usuario.id} atuais={usuario.perfilIds ?? []} />
         </SectionCard>
       </DetailPage>
 

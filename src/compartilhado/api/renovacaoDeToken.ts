@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { config } from '@/compartilhado/config';
 import { sessao, useSessaoStore } from '@/compartilhado/auth/sessaoStore';
 
 /**
@@ -18,10 +19,8 @@ interface RespostaRenovacao {
   refreshToken: string;
 }
 
-const baseURL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:5138/api';
-
 // Cliente "cru" — sem interceptors — para a própria chamada de renovação.
-const clienteRenovacao = axios.create({ baseURL, timeout: 15000 });
+const clienteRenovacao = axios.create({ baseURL: config.apiBaseUrl, timeout: 15000 });
 
 let renovacaoPendente: Promise<string> | null = null;
 

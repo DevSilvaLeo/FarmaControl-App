@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { clienteHttp } from '@/compartilhado/api/clienteHttp';
+import { config } from '@/compartilhado/config';
+import { sessao } from '@/compartilhado/auth/sessaoStore';
 import type { MeuPerfilDto } from '@/compartilhado/auth/sessaoStore';
 import type {
   AlterarPropriaSenhaBody,
@@ -10,10 +12,8 @@ import type {
   TokensDto,
 } from './tipos';
 
-const baseURL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:5138/api';
-
 /** Cliente sem interceptors — o login ainda não tem sessão para injetar/renovar. */
-const clientePublico = axios.create({ baseURL, timeout: 15000 });
+const clientePublico = axios.create({ baseURL: config.apiBaseUrl, timeout: 15000 });
 
 export const autenticacaoApi = {
   login: (body: AutenticarComSenhaBody) =>
@@ -25,7 +25,12 @@ export const autenticacaoApi = {
       .then((r) => r.data),
 
   logout: (todasAsSessoes = false) =>
-    clienteHttp.post('/autenticacao/logout', { todasAsSessoes }).then(() => undefined),
+    clienteHttp
+      .post('/autenticacao/logout', {
+        refreshToken: sessao.get().refreshToken ?? undefined,
+        todasAsSessoes,
+      })
+      .then(() => undefined),
 
   minhaConta: () => clienteHttp.get<MeuPerfilDto>('/minha-conta').then((r) => r.data),
 

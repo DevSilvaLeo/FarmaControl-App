@@ -15,6 +15,10 @@ export const Permissoes = {
   EmpresasConsultar: 'Empresas.Consultar',
   EmpresasGerenciar: 'Empresas.Gerenciar',
 
+  // Geografia
+  GeografiaConsultar: 'Geografia.Consultar',
+  GeografiaGerenciar: 'Geografia.Gerenciar',
+
   // Cadastros
   ProdutosConsultar: 'Produtos.Consultar',
   ProdutosGerenciar: 'Produtos.Gerenciar',

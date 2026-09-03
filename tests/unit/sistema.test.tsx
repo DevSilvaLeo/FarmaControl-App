@@ -93,8 +93,8 @@ describe('MatrizPermissoes', () => {
     {
       modulo: 'Produtos',
       permissoes: [
-        { chave: 'Produtos.Consultar', nome: 'Consultar produtos' },
-        { chave: 'Produtos.Gerenciar', nome: 'Gerenciar produtos' },
+        { id: 1, modulo: 'Produtos', chave: 'Produtos.Consultar', descricao: 'Consultar produtos' },
+        { id: 2, modulo: 'Produtos', chave: 'Produtos.Gerenciar', descricao: 'Gerenciar produtos' },
       ],
     },
   ];

@@ -9,7 +9,9 @@
 
 export interface TokensDto {
   accessToken: string;
+  accessTokenExpiraEmUtc?: string;
   refreshToken: string;
+  refreshTokenExpiraEmUtc?: string;
 }
 
 /** `EscopoDesafioLogin` do backend. */

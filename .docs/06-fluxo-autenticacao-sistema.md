@@ -211,14 +211,37 @@ filiais como lista de cards + botão "Adicionar filial" → drawer.
 | Perfis (lista/form/detalhe + matriz) | `.../paginas/Perfil*.tsx` + `componentes/MatrizPermissoes.tsx` |
 | Empresas e Filiais | `.../paginas/Empresa*.tsx` |
 | Guardas / sessão / menu | `compartilhado/auth/{BootstrapSessao,GuardaAutenticacao,GuardaPermissao}.tsx`, `app/rotas/mapaDePermissoes.ts`, `app/layout/useMenuVisivel.ts` |
-| API (a reconciliar c/ Swagger) | `modulos/autenticacao/api.ts`, `modulos/sistema/api.ts` |
+| API | `modulos/autenticacao/api.ts`, `modulos/sistema/api.ts` |
 
-**Pendências conhecidas:**
-- Nomes de campo dos DTOs de auth/sistema espelham `.spec/06` mas **não foram
-  conferidos contra o Swagger real** — `npm run gerar-tipos` + reconciliar
-  `api.gerado.ts` quando a API estiver acessível (`agents.md` §7 itens 1–2).
-- Fluxo `ConfiguracaoTotpObrigatoria`: usa o token de desafio como bearer
-  temporário para os endpoints de configuração — validar o contrato exato
-  com o backend.
-- E2E de login (`tests/e2e/login.spec.ts`) pronto mas pulado até haver API de
-  teste + `E2E_LOGIN`/`E2E_SENHA`.
+### Reconciliação com o backend real (2026-09-03)
+
+Backend levantado (`dotnet run`, porta 5138) e testado. `npm run gerar-tipos`
+gerou `src/tipos/api.gerado.ts` a partir do Swagger real. Ajustes aplicados:
+
+- **`DiagnosticoDto`**: `horaServidorUtc` (era `horaUtc`).
+- **`PermissaoDto`**: `{ id, chave, modulo, descricao }` — não há `nome`; a
+  `MatrizPermissoes` usa `descricao` como rótulo.
+- **`EmpresaDto`/`EmpresaResumoDto`**: `ativo` (era `ativa`); sem campo
+  `filiais` embutido (vêm de `GET /empresas/{id}/filiais`).
+- **`PUT /usuarios/{id}/perfis`**: body `{ perfilIds: number[] }` (era
+  `{ perfis: string[] }`) — o `SeletorPerfis` passou a trabalhar com IDs
+  (`UsuarioDto.perfilIds`).
+- **`POST /autenticacao/logout`**: envia `refreshToken` + `todasAsSessoes`.
+- **`Permissoes`**: adicionadas `Geografia.Consultar`/`Geografia.Gerenciar`.
+- **CORS resolvido por proxy**: o backend não configura CORS (`.spec/04` §4.2).
+  O app fala com `/api` na mesma origem; o Vite (dev) e o Nginx (container)
+  encaminham para o backend. `src/compartilhado/config.ts` centraliza a
+  leitura da base da API (runtime via `window.__ENV__`, build via `import.meta.env`).
+
+**`GET /minha-conta` só devolve `empresaId`/`filialId`** (sem os nomes) —
+Minha Conta/Topbar exibem o que houver; resolver o nome via `/empresas` fica
+para uma polida futura (o usuário pode não ter `Empresas.Consultar`).
+
+**Pendências:**
+- Fluxo `ConfiguracaoTotpObrigatoria` (primeiro acesso 2FA): usa o token de
+  desafio como bearer temporário — validar o contrato exato (o seed atual
+  não exige 2FA, então não foi exercido).
+- `POST /usuarios` aceita `empresaId`/`filialId`/`perfilIds` opcionais — o
+  form não os envia; confirmar se o backend infere do admin logado.
+- E2E de login (`tests/e2e/login.spec.ts`) pronto mas pulado sem
+  `E2E_LOGIN`/`E2E_SENHA`.

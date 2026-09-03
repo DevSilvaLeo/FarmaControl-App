@@ -1,4 +1,5 @@
 import axios, { AxiosError, type InternalAxiosRequestConfig } from 'axios';
+import { config } from '@/compartilhado/config';
 import { sessao, useSessaoStore } from '@/compartilhado/auth/sessaoStore';
 import { renovarAccessToken } from './renovacaoDeToken';
 
@@ -13,10 +14,8 @@ import { renovarAccessToken } from './renovacaoDeToken';
  *     desloga e manda para `/entrar`.
  */
 
-const baseURL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:5138/api';
-
 export const clienteHttp = axios.create({
-  baseURL,
+  baseURL: config.apiBaseUrl,
   timeout: 15000,
   headers: { 'Content-Type': 'application/json' },
 });

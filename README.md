@@ -45,12 +45,39 @@ npm run gerar-tipos  # regenera src/tipos/api.gerado.ts do swagger.json
 
 ## Configuração
 
-Copie `.env.example` para `.env` e ajuste `VITE_API_BASE_URL` para a URL da
-API local (padrão `http://localhost:5138/api`). Nenhum segredo vive no
-frontend (`.spec/02` §2.6).
+O app fala com a API em **`/api` (mesma origem)** e um proxy encaminha para o
+backend — assim **não há CORS** (o backend não o configura, `.spec/04` §4.2):
 
-> **Pré-requisito da Etapa 0:** a API precisa liberar CORS para
-> `http://localhost:5173` (`.spec/04` §4.2).
+- **`npm run dev`**: o Vite faz proxy de `/api` → `http://localhost:5138`
+  (ajuste com `API_PROXY_TARGET`).
+- **Container**: o Nginx faz o proxy (env `BACKEND_URL`).
+
+`.env` é opcional (copie de `.env.example`); só é preciso para apontar
+`VITE_API_BASE_URL` a uma URL absoluta. Nenhum segredo vive no frontend
+(`.spec/02` §2.6).
+
+## Docker
+
+Imagem multi-stage (build Node → Nginx servindo estático, ~50 MB). A config de
+runtime é injetada em `/env.js` no start (a **mesma imagem** roda em qualquer
+ambiente só trocando variáveis).
+
+```bash
+docker compose up -d --build     # http://localhost:8080  (WEB_PORT p/ trocar a porta)
+docker compose down
+```
+
+Variáveis (docker-compose.yml):
+
+| Variável | Padrão | Uso |
+|---|---|---|
+| `BACKEND_URL` | `http://host.docker.internal:5138` | destino do proxy `/api` do Nginx |
+| `VITE_API_BASE_URL` | `/api` | base da API lida pelo app (deixe `/api` para usar o proxy) |
+| `VITE_APP_NOME` | `FarmaControl` | rótulo exibido |
+| `WEB_PORT` | `8080` | porta publicada no host |
+
+Com o backend rodando no host (`dotnet run`, porta 5138), `docker compose up`
+já funciona ponta a ponta.
 
 ## Estrutura
 

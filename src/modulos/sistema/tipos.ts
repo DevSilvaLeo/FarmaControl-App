@@ -1,8 +1,7 @@
 /**
  * Contratos de Sistema (Usuários, Perfis, Permissões, Empresas).
- *
- * ⚠️ Nomes de campo espelham `.spec/06-fase-2-autenticacao.md`. Reconciliar com
- * `src/tipos/api.gerado.ts` (`npm run gerar-tipos`) quando a API estiver acessível.
+ * Conferidos contra o Swagger real do backend em 2026-09-03
+ * (`src/tipos/api.gerado.ts`).
  */
 
 export interface UsuarioResumoDto {
@@ -15,6 +14,12 @@ export interface UsuarioResumoDto {
 }
 
 export interface UsuarioDto extends UsuarioResumoDto {
+  empresaId?: number;
+  filialId?: number;
+  ultimoLoginUtc?: string | null;
+  /** IDs dos perfis atribuídos — payload de `PUT /usuarios/{id}/perfis`. */
+  perfilIds: number[];
+  /** Nomes dos perfis (somente exibição). */
   perfis: string[];
 }
 
@@ -23,6 +28,9 @@ export interface CriarUsuarioBody {
   login: string;
   email: string;
   senhaInicial: string;
+  empresaId?: number;
+  filialId?: number;
+  perfilIds?: number[];
 }
 
 export interface PerfilResumoDto {
@@ -39,8 +47,10 @@ export interface PerfilDto extends PerfilResumoDto {
 }
 
 export interface PermissaoDto {
+  id: number;
   chave: string;
-  nome: string;
+  modulo: string;
+  /** Rótulo humano da permissão (o backend não expõe um campo `nome`). */
   descricao?: string;
 }
 
@@ -53,16 +63,16 @@ export interface ModuloPermissoesDto {
 export interface EmpresaResumoDto {
   id: number;
   razaoSocial: string;
-  nomeFantasia?: string;
+  nomeFantasia?: string | null;
   documento: string;
-  ativa: boolean;
+  ativo: boolean;
 }
+
+export type EmpresaDto = EmpresaResumoDto;
 
 export interface FilialDto {
   id: number;
+  empresaId?: number;
   nome: string;
-}
-
-export interface EmpresaDto extends EmpresaResumoDto {
-  filiais?: FilialDto[];
+  ativo?: boolean;
 }

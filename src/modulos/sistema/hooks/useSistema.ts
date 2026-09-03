@@ -44,7 +44,7 @@ export function useCriarUsuario(opcoes?: { aoCriar?: (id: number) => void }) {
 
 export function useDefinirPerfisDoUsuario(id: number, opcoes?: { aoSalvar?: () => void }) {
   const invalidar = useInvalidarUsuarios();
-  return useMutacaoComErro((perfis: string[]) => usuariosApi.definirPerfis(id, perfis), {
+  return useMutacaoComErro((perfilIds: number[]) => usuariosApi.definirPerfis(id, perfilIds), {
     mensagemSucesso: 'Perfis atualizados.',
     onSuccess: () => {
       void invalidar();

@@ -57,7 +57,7 @@ export function MatrizPermissoes({
           aoMudar([...proximo]);
         }}
         disabled={desabilitado}
-        options={mod.permissoes.map((p) => ({ label: p.nome, value: p.chave }))}
+        options={mod.permissoes.map((p) => ({ label: p.descricao ?? p.chave, value: p.chave }))}
       />
     );
   };
@@ -117,7 +117,7 @@ export function MatrizPermissoes({
                   disabled={desabilitado}
                   onChange={(e) => alternarUma(p.chave, e.target.checked)}
                 >
-                  {p.nome}
+                  {p.descricao ?? p.chave}
                 </Checkbox>
               ))}
             </div>

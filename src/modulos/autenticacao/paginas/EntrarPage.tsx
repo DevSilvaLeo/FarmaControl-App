@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Alert, Button } from 'antd';
 import { Marca } from '@/compartilhado/ui/Marca';
 import { CampoTexto } from '@/compartilhado/ui/CampoTexto';
+import { config } from '@/compartilhado/config';
 import { normalizarErro } from '@/compartilhado/api/normalizarErro';
 import { useSessaoStore } from '@/compartilhado/auth/sessaoStore';
 import { loginSchema, type LoginForm } from '../validacao';
@@ -76,9 +77,7 @@ export function EntrarPage() {
           Entrar
         </Button>
 
-        <p className="m-0 text-center text-xs text-neutral-400">
-          {import.meta.env.VITE_APP_NOME ?? 'FarmaControl'}
-        </p>
+        <p className="m-0 text-center text-xs text-neutral-400">{config.appNome}</p>
       </form>
     </div>
   );

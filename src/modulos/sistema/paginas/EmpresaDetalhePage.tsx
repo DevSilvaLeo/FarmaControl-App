@@ -29,7 +29,7 @@ export function EmpresaDetalhePage() {
     <DetailPage
       titulo={empresa.razaoSocial}
       subtitulo={empresa.nomeFantasia}
-      statusTag={<StatusTag variante={empresa.ativa ? 'ativo' : 'inativo'} />}
+      statusTag={<StatusTag variante={empresa.ativo ? 'ativo' : 'inativo'} />}
       voltarPara="/sistema/empresas"
     >
       <SectionCard titulo="Dados">

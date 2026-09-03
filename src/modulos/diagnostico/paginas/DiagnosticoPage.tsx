@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Alert, Button, Descriptions, Skeleton, Tag } from 'antd';
 import { PageHeader } from '@/compartilhado/ui/PageHeader';
+import { config } from '@/compartilhado/config';
 import { useDiagnostico } from '../hooks/useDiagnostico';
 
 function formatarHora(valor: string | undefined): string {
@@ -22,7 +23,7 @@ function formatarHora(valor: string | undefined): string {
 export function DiagnosticoPage() {
   const { data, isPending, isError, error, refetch, isFetching } = useDiagnostico();
 
-  const baseUrl = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:5138/api';
+  const baseUrl = config.apiBaseUrl;
 
   return (
     <>
@@ -50,8 +51,8 @@ export function DiagnosticoPage() {
           description={
             <>
               <p className="mb-1">
-                Verifique se a API está no ar em <span className="mono">{baseUrl}</span> e se o CORS
-                libera a origem do frontend (<span className="mono">http://localhost:5173</span>).
+                Verifique se a API está no ar e se o proxy <span className="mono">{baseUrl}</span>{' '}
+                está apontando para o backend (Vite em dev, Nginx no container).
               </p>
               <p className="mb-0 text-neutral-500">{(error as Error).message}</p>
             </>
@@ -68,17 +69,13 @@ export function DiagnosticoPage() {
             column={{ xs: 1, sm: 1, md: 2 }}
             size="small"
             items={[
-              {
-                key: 'aplicacao',
-                label: 'Aplicação',
-                children: data.aplicacao ?? data.nome ?? '—',
-              },
+              { key: 'aplicacao', label: 'Aplicação', children: data.aplicacao ?? '—' },
               { key: 'versao', label: 'Versão', children: data.versao ?? '—' },
               { key: 'ambiente', label: 'Ambiente', children: data.ambiente ?? '—' },
               {
                 key: 'hora',
                 label: 'Hora do servidor (America/Sao_Paulo)',
-                children: formatarHora(data.horaUtc ?? data.dataHoraUtc),
+                children: formatarHora(data.horaServidorUtc),
               },
             ]}
           />
