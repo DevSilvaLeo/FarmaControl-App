@@ -13,6 +13,8 @@
 interface RuntimeEnv {
   VITE_API_BASE_URL?: string;
   VITE_APP_NOME?: string;
+  /** `'on'` mostra a autogestão de 2FA em "Minha Conta". Padrão `'off'` (homologação — bloco 1). */
+  VITE_2FA_VISIVEL?: string;
 }
 
 declare global {
@@ -39,4 +41,10 @@ export const config = {
    */
   apiBaseUrl: ler('VITE_API_BASE_URL', '/api'),
   appNome: ler('VITE_APP_NOME', 'FarmaControl'),
+  /**
+   * Exibe a seção de autogestão de 2FA em "Minha Conta". Na fase de homologação
+   * (bloco 1) o login é só senha e o backend recusa ativar TOTP, então o padrão
+   * é ocultar. Ligar com `VITE_2FA_VISIVEL=on` quando o 2FA voltar a valer.
+   */
+  doisFatoresVisivel: ler('VITE_2FA_VISIVEL', 'off').toLowerCase() === 'on',
 } as const;

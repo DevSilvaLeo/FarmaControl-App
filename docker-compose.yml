@@ -22,6 +22,8 @@ services:
       # Config de runtime do app (injetada em /env.js):
       VITE_API_BASE_URL: "/api"
       VITE_APP_NOME: "FarmaControl"
+      # Homologação (bloco 1): login apenas por senha — oculta a autogestão de 2FA.
+      VITE_2FA_VISIVEL: "${VITE_2FA_VISIVEL:-off}"
     extra_hosts:
       # Faz `host.docker.internal` resolver também no Docker Engine (Linux).
       - "host.docker.internal:host-gateway"
