@@ -1,0 +1,6 @@
+dist
+coverage
+node_modules
+playwright-report
+src/tipos/api.gerado.ts
+package-lock.json

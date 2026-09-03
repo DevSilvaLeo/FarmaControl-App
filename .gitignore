@@ -1,23 +1,35 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
 # dependencies
-/node_modules
-/.pnp
+node_modules
+.pnp
 .pnp.js
 
-# testing
-/coverage
+# build / cache
+dist
+build
+coverage
+*.local
+.vite
+node_modules/.tmp
 
-# production
-/build
+# test artifacts
+playwright-report
+test-results
 
-# misc
+# env (só .env.example é versionado — .spec/02 §2.6)
+.env
+.env.*
+!.env.example
+
+# editor / os
 .DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
 
+# logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*

@@ -1,0 +1,71 @@
+/*
+ * Ordem de import (agents.md §5.1.2): o reset/tokens do Ant Design v6 é
+ * carregado pela própria biblioteca em runtime ANTES destas camadas; aqui
+ * declaramos as camadas do Tailwind para que os utilitários (especificidade
+ * intencional maior) consigam sobrescrever quando necessário.
+ */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+
+  /* Tokens semânticos por papel expostos como variáveis CSS (.docs/02 §2.7).
+     Um tema escuro futuro redefine apenas este bloco. */
+  --cor-primaria: #1663b3;
+  --cor-primaria-hover: #124f8f;
+  --cor-acento: #0e9384;
+  --cor-fundo-app: #f6f8fa;
+  --cor-superficie: #ffffff;
+  --cor-superficie-afundada: #f1f5f9;
+  --cor-borda: #e2e8f0;
+  --cor-texto-forte: #1e293b;
+  --cor-texto-corpo: #334155;
+  --cor-texto-secundario: #64748b;
+  --cor-texto-desabilitado: #94a3b8;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: var(--cor-fundo-app);
+  color: var(--cor-texto-corpo);
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Foco visível sempre presente (.docs/01 §1.7) */
+:focus-visible {
+  outline: 2px solid var(--cor-primaria);
+  outline-offset: 2px;
+}
+
+/* Códigos (barras, lote, NCM, CNPJ) — .docs/02 §2.3.2 */
+.mono,
+code,
+kbd,
+samp {
+  font-family: 'SFMono-Regular', 'Cascadia Code', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Respeita preferência de menos movimento (.docs/02 §2.6) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
